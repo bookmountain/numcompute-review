@@ -4,16 +4,20 @@ import operator
 import numpy as np
 
 
-def real_array(x, *, ndim=None, allow_nan=False, nonempty=True):
-    """Validate a real numeric array without changing its dtype."""
+def real_array(x, *, ndim=None, allow_nan=False, nonempty=True, check_values=True):
+    """Validate a real numeric array without changing its dtype.
+
+    check_values=False skips the O(n) NaN/infinity scan of every element.
+    """
     a = np.asarray(x)
+    """b stands for boolean, i for signed integer, u for unsigned integer, f for floating point."""
     if a.dtype.kind not in "biuf":
         raise TypeError("expected a real numeric array")
     if ndim is not None and a.ndim != ndim:
         raise ValueError(f"expected {ndim} dimensions, got shape {a.shape}")
     if nonempty and a.size == 0:
         raise ValueError("array must not be empty")
-    if np.isinf(a).any() or (not allow_nan and np.isnan(a).any()):
+    if check_values and (np.isinf(a).any() or (not allow_nan and np.isnan(a).any())):
         raise ValueError("array contains unsupported NaN or infinite values")
     return a
 
