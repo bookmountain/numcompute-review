@@ -83,7 +83,7 @@ member supplies their reviewed section.
 - Statistics/metrics/benchmark quickstart examples, the benchmark/report
   evidence, and the third video section.
 
-## Member D — composition, numerical methods, and integration
+## Ruofan Li — composition, numerical methods, and integration
 
 **Branch:** `pipeline-optim`
 
@@ -122,8 +122,8 @@ checks.
 |---|---|---|
 | A | Shushan | Pull-request review covering algorithm correctness and tests |
 | Shushan | C | Pull-request review covering shapes, metrics, and benchmarks |
-| C | D | Pull-request review covering protocols and numerical stability |
-| D | A | Pull-request review covering CSV/preprocessing contracts |
+| C | Ruofan | Pull-request review covering protocols and numerical stability |
+| Ruofan | A | Pull-request review covering CSV/preprocessing contracts |
 
 ## Integration sequence
 

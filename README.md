@@ -32,7 +32,7 @@ at most five minutes, and a PDF report of at most four pages.
 | A: pending | CSV I/O and preprocessing | `data-preprocessing` |
 | Shushan | Sorting, searching, ranking, and percentiles | `book/algorithm` |
 | C: pending | Statistics, metrics, and benchmarking | `stats-metrics` |
-| D: pending | Pipelines, optimisation, utilities, and integration | `pipeline-optim` |
+| Ruofan| Pipelines, optimisation, utilities, and integration | `pipeline-optim` |
 
 Members A, C, and D should replace `pending` with their names and GitHub
 usernames. Branch ownership includes implementation, tests, documentation,
