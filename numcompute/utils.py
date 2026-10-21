@@ -7,7 +7,7 @@ Except for the explicitly named logsumexp operation, public names and signatures
 are provisional choices inferred from ASSIGNMENT_REQUIREMENTS.md. Numerical
 utility functions accept real numeric NumPy arrays; iter_batches accepts NumPy
 arrays of any dtype. Functions must not mutate their inputs. Floating-point numerical
-outputs use float64; index outputs use np.intp. Negative axes follow NumPy
+outputs use float64. Negative axes follow NumPy
 conventions. Non-contiguous arrays are supported. Complexity estimates include
 output storage unless stated otherwise, with N denoting the input element count.
 """
@@ -335,72 +335,6 @@ def manhattan_distance(
             differences = np.asarray(x, dtype=np.float64) - np.asarray(y, dtype=np.float64)
         result = np.sum(np.abs(differences), axis=axis, dtype=np.float64)
         return np.asarray(result, dtype=np.float64)
-
-
-def top_k_indices(x: np.ndarray, k: int, largest: bool = True) -> np.ndarray:
-    """Select indexes of the k largest or smallest values deterministically.
-
-    Parameters
-    ----------
-    x : numpy.ndarray, shape (n,)
-        Finite real values; an empty array is allowed when k=0.
-    k : int
-        Number of indexes to return, satisfying 0 <= k <= n.
-    largest : bool, default=True
-        Select largest values when True, smallest values otherwise.
-
-    Returns
-    -------
-    numpy.ndarray of dtype np.intp, shape (k,)
-        Indexes ordered by decreasing value when largest=True, increasing
-        otherwise. Equal values favour lower original indexes, including
-        ties at the selection boundary. k=0 returns an empty index array.
-
-    Raises
-    ------
-    TypeError
-        If x is not a real numeric NumPy array, k is not an integer, or
-        largest is not boolean.
-    ValueError
-        If x is not one-dimensional or contains NaN/infinity, or k is
-        outside [0, n].
-
-    Notes
-    -----
-    Intended cost: O(n + k log k) time and O(n + k) space using partitioning
-    and deterministic boundary-tie handling. Selection semantics must remain
-    consistent with the top-k functionality in sort_search.py, including
-    ordering, tie-breaking, and invalid-input handling. Coordinate shared
-    behaviour to avoid divergent selection semantics between the modules.
-    """
-    if not isinstance(x, np.ndarray) or x.dtype.kind not in "iuf":
-        raise TypeError("x must be a real numeric NumPy array")
-    if isinstance(k, (bool, np.bool_)) or not isinstance(k, (int, np.integer)):
-        raise TypeError("k must be an integer")
-    if not isinstance(largest, (bool, np.bool_)):
-        raise TypeError("largest must be boolean")
-    if x.ndim != 1:
-        raise ValueError("x must be one-dimensional")
-    if not np.isfinite(x).all():
-        raise ValueError("x must contain only finite values")
-    if not 0 <= k <= x.size:
-        raise ValueError("k must satisfy 0 <= k <= len(x)")
-    k = int(k)
-    if k == 0:
-        return np.empty(0, dtype=np.intp)
-    values = np.asarray(x)
-    boundary = values.size - k if largest else k - 1
-    partition = np.argpartition(values, boundary)
-    cutoff = values[partition[boundary]]
-    better = np.flatnonzero(values > cutoff if largest else values < cutoff)
-    ties = np.flatnonzero(values == cutoff)[:k - better.size]
-    selected = np.concatenate((better, ties))
-    keys = values[selected]
-    if largest:
-        # Complement reverses integer order without signed/unsigned overflow.
-        keys = np.bitwise_not(keys) if keys.dtype.kind in "iu" else -keys
-    order = np.lexsort((selected, keys))
-    return np.asarray(selected[order], dtype=np.intp)
 
 
 def iter_batches(

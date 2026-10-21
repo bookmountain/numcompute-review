@@ -7,20 +7,18 @@ import pytest
 
 from numcompute.utils import (
     euclidean_distance, iter_batches, logsumexp, manhattan_distance,
-    relu, sigmoid, softmax, top_k_indices,
+    relu, sigmoid, softmax,
 )
 
 
 DISTANCES = (euclidean_distance, manhattan_distance)
-NUMERICAL = (sigmoid, relu, softmax, logsumexp, *DISTANCES, top_k_indices)
+NUMERICAL = (sigmoid, relu, softmax, logsumexp, *DISTANCES)
 AXIS_FUNCTIONS = (softmax, logsumexp, *DISTANCES)
 
 
 def call_numeric(function, x, **kwargs):
     if function in DISTANCES:
         return function(x, np.zeros_like(x), **kwargs)
-    if function is top_k_indices:
-        return function(x, 1, **kwargs)
     return function(x, **kwargs)
 
 
@@ -38,7 +36,7 @@ def test_numeric_functions_preserve_noncontiguous_input(function, dtype):
     original = backing.copy()
     result = call_numeric(function, backing[::2])
     assert isinstance(result, np.ndarray)
-    assert result.dtype == (np.intp if function is top_k_indices else np.float64)
+    assert result.dtype == np.float64
     np.testing.assert_array_equal(backing, original)
     assert backing.dtype == original.dtype
 
@@ -63,7 +61,7 @@ def test_invalid_axis(function, axis, error):
         call_numeric(function, np.ones((2, 3)), axis=axis)
 
 
-@pytest.mark.parametrize("function", [softmax, *DISTANCES, top_k_indices])
+@pytest.mark.parametrize("function", [softmax, *DISTANCES])
 @pytest.mark.parametrize("value", [np.nan, np.inf, -np.inf])
 def test_finite_only_functions_reject_nonfinite_values(function, value):
     with pytest.raises(ValueError, match="finite"):
@@ -240,51 +238,6 @@ def test_integer_distance_subtraction_does_not_wrap(function, left, right,
     x, y = np.array([left], dtype=left_dtype), np.array([right], dtype=right_dtype)
     assert_float_output(function(x, y), float(abs(left - right)))
     assert_float_output(function(y, x), float(abs(left - right)))
-
-
-@pytest.mark.parametrize("largest, order", [(True, [1, 2, 4, 3, 0]),
-                                            (False, [0, 3, 1, 2, 4])])
-@pytest.mark.parametrize("k", [0, 1, 2, 4, 5, np.int64(3)])
-@pytest.mark.parametrize("dtype", [np.float64, np.int64, np.uint64])
-def test_top_k_order_and_boundary_ties(largest, order, k, dtype):
-    x = np.array([1, 5, 5, 2, 5], dtype=dtype)
-    result = top_k_indices(x, k, largest=largest)
-    assert result.shape == (k,)
-    assert result.dtype == np.intp
-    np.testing.assert_array_equal(result, order[:k])
-
-
-@pytest.mark.parametrize("dtype", [np.int64, np.uint64])
-def test_top_k_large_integers_and_extreme_order(dtype):
-    limits = np.iinfo(dtype)
-    x = np.array([limits.min, 2**53, 2**53 + 1, limits.max], dtype=dtype)
-    np.testing.assert_array_equal(top_k_indices(x, 4), [3, 2, 1, 0])
-    np.testing.assert_array_equal(top_k_indices(x, 4, largest=np.bool_(False)),
-                                  [0, 1, 2, 3])
-
-
-def test_top_k_all_ties_and_empty():
-    np.testing.assert_array_equal(top_k_indices(np.ones(6), 3), [0, 1, 2])
-    result = top_k_indices(np.array([]), 0)
-    assert result.shape == (0,)
-    assert result.dtype == np.intp
-
-
-@pytest.mark.parametrize("x, k, largest, error", [
-    (np.ones((2, 2)), 1, True, ValueError),
-    (np.array(1), 1, True, ValueError),
-    (np.ones(2), -1, True, ValueError),
-    (np.ones(2), 3, True, ValueError),
-    (np.array([]), 1, True, ValueError),
-    (np.ones(2), True, True, TypeError),
-    (np.ones(2), np.bool_(True), True, TypeError),
-    (np.ones(2), 1.0, True, TypeError),
-    (np.ones(2), 1, 1, TypeError),
-    (np.ones(2), 1, None, TypeError),
-])
-def test_top_k_invalid_arguments(x, k, largest, error):
-    with pytest.raises(error):
-        top_k_indices(x, k, largest=largest)
 
 
 @pytest.mark.parametrize("drop_last", [False, True, np.bool_(True)])
