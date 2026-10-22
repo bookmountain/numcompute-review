@@ -8,6 +8,8 @@ from pathlib import Path
 import numpy as np
 
 from numcompute.io import load_csv, iter_csv_chunks
+from numcompute.preprocessing import StandardScaler
+
 
 
 class TestLoadCSV(unittest.TestCase):
@@ -144,6 +146,89 @@ class TestCSVChunks(unittest.TestCase):
             list(iter_csv_chunks(self.path, chunk_size=True))
 
 
+class TestStandardScaler(unittest.TestCase):
+    """Check scaling and reuse of training statistics."""
+
+    def test_scale_training_data(self):
+        """Centre each feature and give it unit standard deviation."""
+        X = np.array([[1, 10], [3, 20], [5, 30]], dtype=float)
+
+        scaler = StandardScaler()
+        result = scaler.fit_transform(X)
+
+        np.testing.assert_allclose(
+            result.mean(axis=0), [0, 0], atol=1e-12
+        )
+        np.testing.assert_allclose(result.std(axis=0), [1, 1])
+        self.assertEqual(result.shape, X.shape)
+
+    def test_reuse_training_statistics(self):
+        """Transform new data without learning from it."""
+        scaler = StandardScaler()
+        self.assertIs(scaler.fit([[1, 10], [3, 20]]), scaler)
+
+        result = scaler.transform([[5, 30]])
+
+        np.testing.assert_allclose(result, [[3, 3]])
+        np.testing.assert_allclose(scaler.mean_, [2, 15])
+        np.testing.assert_allclose(scaler.scale_, [1, 5])
+
+    def test_constant_feature(self):
+        """Use a scale of one for a constant training feature."""
+        scaler = StandardScaler()
+        result = scaler.fit_transform([[2, 1], [2, 3]])
+
+        np.testing.assert_allclose(result, [[0, -1], [0, 1]])
+        np.testing.assert_allclose(
+            scaler.transform([[4, 5]]), [[2, 3]]
+        )
+
+    def test_missing_values(self):
+        """Ignore NaN during fitting and preserve it in the output."""
+        X = np.array([[1, np.nan], [3, 10], [5, 20]])
+
+        scaler = StandardScaler()
+        result = scaler.fit_transform(X)
+
+        np.testing.assert_allclose(scaler.mean_, [3, 15])
+        self.assertTrue(np.isnan(result[0, 1]))
+        np.testing.assert_allclose(result[1:, 1], [-1, 1])
+
+    def test_reject_all_nan_feature(self):
+        """Reject a training feature with no observed values."""
+        with self.assertRaises(ValueError):
+            StandardScaler().fit([[1, np.nan], [2, np.nan]])
+
+    def test_noncontiguous_input_is_unchanged(self):
+        """Accept an array view without changing its source data."""
+        source = np.arange(24, dtype=float).reshape(4, 6)
+        original = source.copy()
+        X = source[:, ::2]
+
+        result = StandardScaler().fit_transform(X)
+
+        self.assertEqual(result.shape, X.shape)
+        np.testing.assert_array_equal(source, original)
+        np.testing.assert_allclose(
+            result.mean(axis=0), [0, 0, 0], atol=1e-12
+        )
+        np.testing.assert_allclose(result.std(axis=0), [1, 1, 1])
+
+    def test_require_fit_and_matching_features(self):
+        """Reject use before fitting and incorrect feature counts."""
+        scaler = StandardScaler()
+
+        with self.assertRaises(RuntimeError):
+            scaler.transform([[1, 2]])
+
+        scaler.fit([[1, 2], [3, 4]])
+
+        with self.assertRaises(ValueError):
+            scaler.transform([[1, 2, 3]])
+
+        self.assertEqual(
+            scaler.transform(np.empty((0, 2))).shape, (0, 2)
+        )
 
 if __name__ == "__main__":
     unittest.main()
