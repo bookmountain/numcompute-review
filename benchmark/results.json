@@ -1,0 +1,564 @@
+{
+  "schema_version": 1,
+  "environment": {
+    "timestamp_utc": "2026-10-22T04:21:46.675849+00:00",
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "numpy": "2.5.3",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "cpu_count": 8,
+    "numpy_config": "{\n  \"Compilers\": {\n    \"c\": {\n      \"name\": \"clang\",\n      \"linker\": \"ld64\",\n      \"version\": \"21.0.0\",\n      \"commands\": \"clang\"\n    },\n    \"cython\": {\n      \"name\": \"cython\",\n      \"linker\": \"cython\",\n      \"version\": \"3.3.0\",\n      \"commands\": \"cython\"\n    },\n    \"c++\": {\n      \"name\": \"clang\",\n      \"linker\": \"ld64\",\n      \"version\": \"21.0.0\",\n      \"commands\": \"clang++\"\n    }\n  },\n  \"Machine Information\": {\n    \"host\": {\n      \"cpu\": \"aarch64\",\n      \"family\": \"aarch64\",\n      \"endian\": \"little\",\n      \"system\": \"darwin\"\n    },\n    \"build\": {\n      \"cpu\": \"aarch64\",\n      \"family\": \"aarch64\",\n      \"endian\": \"little\",\n      \"system\": \"darwin\"\n    }\n  },\n  \"Build Dependencies\": {\n    \"blas\": {\n      \"name\": \"openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34\",\n      \"detection method\": \"system\",\n      \"include directory\": \"unknown\",\n      \"lib directory\": \"unknown\",\n      \"openblas configuration\": \"unknown\",\n      \"pc file directory\": \"unknown\"\n    },\n    \"lapack\": {\n      \"name\": \"openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34\",\n      \"detection method\": \"system\",\n      \"include directory\": \"unknown\",\n      \"lib directory\": \"unknown\",\n      \"openblas configuration\": \"unknown\",\n      \"pc file directory\": \"unknown\"\n    }\n  },\n  \"Python Information\": {\n    \"path\": \"/opt/homebrew/Cellar/python@3.14/3.14.7/bin/python3.14\",\n    \"version\": \"3.14\"\n  },\n  \"SIMD Extensions\": {\n    \"baseline\": [\n      \"NEON\",\n      \"NEON_FP16\",\n      \"NEON_VFPV4\",\n      \"ASIMD\"\n    ],\n    \"found\": [\n      \"ASIMDHP\",\n      \"ASIMDDP\"\n    ],\n    \"not found\": [\n      \"ASIMDFHM\",\n      \"SVE\"\n    ]\n  }\n}\n",
+    "thread_environment": {
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null,
+      "NUMEXPR_NUM_THREADS": null
+    },
+    "gc_enabled": true,
+    "timer": "perf_counter_ns",
+    "timer_resolution_seconds": 4.166666666666666e-08
+  },
+  "config": {
+    "seed": 2026,
+    "repeats": 5,
+    "number": 3,
+    "warmups": 1,
+    "sample_order": "alternating",
+    "rows": 2000,
+    "features": 16,
+    "rng": "numpy.random.default_rng / PCG64"
+  },
+  "results": [
+    {
+      "name": "utils.sigmoid",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": ""
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.0006383333333333333,
+          0.0006246806666666667,
+          0.000619125,
+          0.0006373333333333333,
+          0.0006195556666666667
+        ],
+        "median_seconds": 0.0006246806666666667,
+        "min_seconds": 0.000619125,
+        "max_seconds": 0.0006383333333333333
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.005002958333333333,
+          0.005092194666666667,
+          0.004951569666666667,
+          0.005050486,
+          0.0049508473333333336
+        ],
+        "median_seconds": 0.005002958333333333,
+        "min_seconds": 0.0049508473333333336,
+        "max_seconds": 0.005092194666666667
+      },
+      "baseline_over_operation": 8.008825309144617
+    },
+    {
+      "name": "utils.relu",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": ""
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          1.8166666666666667e-05,
+          1.8361e-05,
+          1.633333333333333e-05,
+          3.5375e-05,
+          1.9680666666666666e-05
+        ],
+        "median_seconds": 1.8361e-05,
+        "min_seconds": 1.633333333333333e-05,
+        "max_seconds": 3.5375e-05
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0031272223333333334,
+          0.0030215416666666667,
+          0.0030334306666666665,
+          0.0032181526666666665,
+          0.0030542223333333333
+        ],
+        "median_seconds": 0.0030542223333333333,
+        "min_seconds": 0.0030215416666666667,
+        "max_seconds": 0.0032181526666666665
+      },
+      "baseline_over_operation": 166.3429188678903
+    },
+    {
+      "name": "utils.softmax",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": ""
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.00020495833333333333,
+          0.00021744433333333333,
+          0.00018391666666666667,
+          0.00022270833333333333,
+          0.00019347233333333333
+        ],
+        "median_seconds": 0.00020495833333333333,
+        "min_seconds": 0.00018391666666666667,
+        "max_seconds": 0.00022270833333333333
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.008184694666666667,
+          0.008226986,
+          0.011931847333333334,
+          0.011848305666666666,
+          0.008067541666666667
+        ],
+        "median_seconds": 0.008226986,
+        "min_seconds": 0.008067541666666667,
+        "max_seconds": 0.011931847333333334
+      },
+      "baseline_over_operation": 40.1397975198211
+    },
+    {
+      "name": "utils.logsumexp",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": ""
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.000242014,
+          0.00021654166666666667,
+          0.00018666666666666666,
+          0.00022202766666666666,
+          0.000212
+        ],
+        "median_seconds": 0.00021654166666666667,
+        "min_seconds": 0.00018666666666666666,
+        "max_seconds": 0.000242014
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.006347916666666667,
+          0.006462875,
+          0.0063419443333333336,
+          0.006254611333333333,
+          0.006302652666666667
+        ],
+        "median_seconds": 0.0063419443333333336,
+        "min_seconds": 0.006254611333333333,
+        "max_seconds": 0.006462875
+      },
+      "baseline_over_operation": 29.287408889744086
+    },
+    {
+      "name": "utils.euclidean_distance",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": ""
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.00046211133333333334,
+          0.0004537636666666667,
+          0.0003896806666666667,
+          0.00045645833333333335,
+          0.0004387083333333333
+        ],
+        "median_seconds": 0.0004537636666666667,
+        "min_seconds": 0.0003896806666666667,
+        "max_seconds": 0.00046211133333333334
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.004860069666666667,
+          0.004633791666666666,
+          0.004783583333333333,
+          0.004675889,
+          0.004644583333333333
+        ],
+        "median_seconds": 0.004675889,
+        "min_seconds": 0.004633791666666666,
+        "max_seconds": 0.004860069666666667
+      },
+      "baseline_over_operation": 10.304679161178615
+    },
+    {
+      "name": "utils.manhattan_distance",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": ""
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          4.672233333333333e-05,
+          5.108333333333333e-05,
+          4.440266666666667e-05,
+          5.5625e-05,
+          4.1861e-05
+        ],
+        "median_seconds": 4.672233333333333e-05,
+        "min_seconds": 4.1861e-05,
+        "max_seconds": 5.5625e-05
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.005048597333333333,
+          0.005230153,
+          0.005057625,
+          0.0051310416666666666,
+          0.005215472333333334
+        ],
+        "median_seconds": 0.0051310416666666666,
+        "min_seconds": 0.005048597333333333,
+        "max_seconds": 0.005230153
+      },
+      "baseline_over_operation": 109.81989341285752
+    },
+    {
+      "name": "utils.iter_batches",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Fully consume batch views; return batch lengths; batch_size=128. Exact batch contents/order and input preservation checked during untimed setup."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          4.555666666666667e-06,
+          4.0693333333333336e-06,
+          3.972e-06,
+          4.041666666666666e-06,
+          3.916666666666667e-06
+        ],
+        "median_seconds": 4.041666666666666e-06,
+        "min_seconds": 3.916666666666667e-06,
+        "max_seconds": 4.555666666666667e-06
+      },
+      "baseline_label": "python_slice_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          3.1666666666666667e-06,
+          3.0416666666666666e-06,
+          3.083333333333333e-06,
+          2.9583333333333335e-06,
+          3e-06
+        ],
+        "median_seconds": 3.0416666666666666e-06,
+        "min_seconds": 2.9583333333333335e-06,
+        "max_seconds": 3.1666666666666667e-06
+      },
+      "baseline_over_operation": 0.7525773195876289
+    },
+    {
+      "name": "optim.grad",
+      "metadata": {
+        "shape": [
+          16
+        ],
+        "dtype": "float64",
+        "method": "central",
+        "step": 1e-05,
+        "rtol": 1e-06,
+        "atol": 1e-07,
+        "notes": "Analytic derivative check only; no timed baseline."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.00011716666666666666,
+          0.00011541666666666666,
+          0.00012320833333333332,
+          0.00013276366666666666,
+          0.00011130566666666666
+        ],
+        "median_seconds": 0.00011716666666666666,
+        "min_seconds": 0.00011130566666666666,
+        "max_seconds": 0.00013276366666666666
+      }
+    },
+    {
+      "name": "optim.jacobian",
+      "metadata": {
+        "shape": [
+          16
+        ],
+        "dtype": "float64",
+        "method": "central",
+        "step": 1e-05,
+        "rtol": 1e-06,
+        "atol": 1e-07,
+        "notes": "Analytic derivative check only; no timed baseline."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.000120014,
+          0.000125875,
+          0.00012047233333333333,
+          0.00011870833333333334,
+          0.00011856933333333333
+        ],
+        "median_seconds": 0.000120014,
+        "min_seconds": 0.00011856933333333333,
+        "max_seconds": 0.000125875
+      }
+    },
+    {
+      "name": "pipeline.Pipeline.transform",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Benchmark-only activation adapters; fit is a no-op. fit_transform includes fresh construction; transform uses pre-fitted objects. Ratio measures composition/copying overhead, not a vectorisation speedup."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.000174097,
+          0.00018291666666666668,
+          0.00028252766666666667,
+          0.00018368066666666667,
+          0.000179528
+        ],
+        "median_seconds": 0.00018291666666666668,
+        "min_seconds": 0.000174097,
+        "max_seconds": 0.00028252766666666667
+      },
+      "baseline_label": "direct_numpy_utilities",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.00016719466666666665,
+          0.00017906933333333334,
+          0.00022354166666666667,
+          0.00018020833333333333,
+          0.00016868066666666666
+        ],
+        "median_seconds": 0.00017906933333333334,
+        "min_seconds": 0.00016719466666666665,
+        "max_seconds": 0.00022354166666666667
+      },
+      "baseline_over_operation": 0.9789667425968109
+    },
+    {
+      "name": "pipeline.Pipeline.fit_transform",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Benchmark-only activation adapters; fit is a no-op. fit_transform includes fresh construction; transform uses pre-fitted objects. Ratio measures composition/copying overhead, not a vectorisation speedup."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.00021876366666666666,
+          0.00020981933333333333,
+          0.00020494433333333333,
+          0.00020656933333333333,
+          0.0002115
+        ],
+        "median_seconds": 0.00020981933333333333,
+        "min_seconds": 0.00020494433333333333,
+        "max_seconds": 0.00021876366666666666
+      },
+      "baseline_label": "direct_numpy_utilities",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.00016845833333333334,
+          0.00016879166666666667,
+          0.00016275,
+          0.00016130533333333334,
+          0.00018319433333333334
+        ],
+        "median_seconds": 0.00016845833333333334,
+        "min_seconds": 0.00016130533333333334,
+        "max_seconds": 0.00018319433333333334
+      },
+      "baseline_over_operation": 0.8028732655713329
+    },
+    {
+      "name": "pipeline.FeatureUnion.transform",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Benchmark-only activation adapters; fit is a no-op. fit_transform includes fresh construction; transform uses pre-fitted objects. Ratio measures composition/copying overhead, not a vectorisation speedup."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.000665875,
+          0.0008398193333333334,
+          0.000687986,
+          0.000663972,
+          0.0007016806666666666
+        ],
+        "median_seconds": 0.000687986,
+        "min_seconds": 0.000663972,
+        "max_seconds": 0.0008398193333333334
+      },
+      "baseline_label": "direct_numpy_utilities",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0006532083333333333,
+          0.0006909443333333334,
+          0.0006615,
+          0.000658028,
+          0.000672375
+        ],
+        "median_seconds": 0.0006615,
+        "min_seconds": 0.0006532083333333333,
+        "max_seconds": 0.0006909443333333334
+      },
+      "baseline_over_operation": 0.9615021235897242
+    },
+    {
+      "name": "pipeline.FeatureUnion.fit_transform",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Benchmark-only activation adapters; fit is a no-op. fit_transform includes fresh construction; transform uses pre-fitted objects. Ratio measures composition/copying overhead, not a vectorisation speedup."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.000678764,
+          0.000680861,
+          0.000675764,
+          0.00085825,
+          0.0007047223333333333
+        ],
+        "median_seconds": 0.000680861,
+        "min_seconds": 0.000675764,
+        "max_seconds": 0.00085825
+      },
+      "baseline_label": "direct_numpy_utilities",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0006669723333333333,
+          0.000664653,
+          0.0006601943333333333,
+          0.0006585,
+          0.0006628473333333333
+        ],
+        "median_seconds": 0.0006628473333333333,
+        "min_seconds": 0.0006585,
+        "max_seconds": 0.0006669723333333333
+      },
+      "baseline_over_operation": 0.9735428131929031
+    }
+  ],
+  "source_sha256": {
+    "benchmark/run.py": "f2e82681a029f122c21a87bb93a22b90cc09f2adc00d7ff13838847007233bdd",
+    "numcompute/benchmarking.py": "21a21775cdca6ebd33d874694f1365e5dda5d5e4e0b7dc7dff07d2e381372b31",
+    "numcompute/_validation.py": "4e0b3099babe83070a3b7e75f8675a91c79e3811ddcb9bdc9c5509b0173d054b",
+    "numcompute/utils.py": "a29a76928742d2b3406fdcfdaa967c19f5d59adeb8d5f4760e9c21bb7803fb0a",
+    "numcompute/optim.py": "446263bdd81ddefe751e7ef1831499d646fc7dc6448712c6bfea4d655c131435",
+    "numcompute/pipeline.py": "ff48b2905d2ae918db27931466df970fbf8132f026d4e5c5dc67833029612f87"
+  },
+  "git": {
+    "head": "bf8cdc2e6104e64aba019e64c65f8b0eb690674d",
+    "status": " M CONTRIBUTIONS.md\n M README.md\n?? benchmark/\n?? numcompute/benchmarking.py\n?? optim_explained.py\n?? tests/test_benchmarking.py\n"
+  }
+}
