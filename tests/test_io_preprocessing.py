@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 
 from numcompute.io import load_csv, iter_csv_chunks
-from numcompute.preprocessing import StandardScaler
+from numcompute.preprocessing import StandardScaler, MinMaxScaler
 
 
 
@@ -229,6 +229,94 @@ class TestStandardScaler(unittest.TestCase):
         self.assertEqual(
             scaler.transform(np.empty((0, 2))).shape, (0, 2)
         )
+
+
+class TestMinMaxScaler(unittest.TestCase):
+    """Check feature ranges and reuse of training limits."""
+
+    def test_scale_training_data(self):
+        """Map training minima to zero and maxima to one."""
+        X = np.array([[1, 10], [3, 20], [5, 30]], dtype=float)
+
+        result = MinMaxScaler().fit_transform(X)
+
+        np.testing.assert_allclose(
+            result,
+            [[0, 0], [0.5, 0.5], [1, 1]],
+        )
+        self.assertEqual(result.shape, X.shape)
+
+    def test_reuse_training_limits(self):
+        """Use training limits even for values outside their range."""
+        scaler = MinMaxScaler()
+        self.assertIs(scaler.fit([[1, 10], [5, 30]]), scaler)
+
+        result = scaler.transform([[7, 0]])
+
+        np.testing.assert_allclose(result, [[1.5, -0.5]])
+        np.testing.assert_allclose(scaler.data_min_, [1, 10])
+        np.testing.assert_allclose(scaler.data_max_, [5, 30])
+        np.testing.assert_allclose(scaler.data_range_, [4, 20])
+
+    def test_constant_feature(self):
+        """Avoid division by zero for a constant training feature."""
+        scaler = MinMaxScaler()
+        result = scaler.fit_transform([[2, 1], [2, 3]])
+
+        np.testing.assert_allclose(result, [[0, 0], [0, 1]])
+        np.testing.assert_allclose(
+            scaler.transform([[4, 5]]), [[2, 2]]
+        )
+
+    def test_missing_values(self):
+        """Ignore NaN when learning limits and preserve it afterward."""
+        X = np.array([[1, np.nan], [3, 10], [5, 20]])
+
+        scaler = MinMaxScaler()
+        result = scaler.fit_transform(X)
+
+        np.testing.assert_allclose(scaler.data_min_, [1, 10])
+        np.testing.assert_allclose(scaler.data_max_, [5, 20])
+        np.testing.assert_allclose(
+            result,
+            [[0, np.nan], [0.5, 0], [1, 1]],
+            equal_nan=True,
+        )
+
+    def test_reject_all_nan_feature(self):
+        """Reject a training feature with no observed values."""
+        with self.assertRaises(ValueError):
+            MinMaxScaler().fit([[1, np.nan], [2, np.nan]])
+
+    def test_noncontiguous_input_is_unchanged(self):
+        """Scale an array view without changing its source data."""
+        source = np.arange(24, dtype=float).reshape(4, 6)
+        original = source.copy()
+        X = source[:, ::2]
+
+        result = MinMaxScaler().fit_transform(X)
+
+        np.testing.assert_array_equal(source, original)
+        self.assertEqual(result.shape, X.shape)
+        np.testing.assert_allclose(result.min(axis=0), [0, 0, 0])
+        np.testing.assert_allclose(result.max(axis=0), [1, 1, 1])
+
+    def test_require_fit_and_matching_features(self):
+        """Reject use before fitting and incorrect feature counts."""
+        scaler = MinMaxScaler()
+
+        with self.assertRaises(RuntimeError):
+            scaler.transform([[1, 2]])
+
+        scaler.fit([[1, 2], [3, 4]])
+
+        with self.assertRaises(ValueError):
+            scaler.transform([[1, 2, 3]])
+
+        self.assertEqual(
+            scaler.transform(np.empty((0, 2))).shape, (0, 2)
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
