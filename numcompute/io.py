@@ -105,3 +105,96 @@ def load_csv(
         values[missing_mask] = replacement
 
     return values
+
+
+def iter_csv_chunks(
+    path,
+    chunk_size=1000,
+    delimiter=",",
+    skip_header=0,
+    dtype=float,
+    missing="fill",
+    fill_value=np.nan,
+):
+    """Read a numeric CSV file in smaller sections.
+
+    Parameters
+    ----------
+    path : str or path-like
+        Path to the CSV file.
+    chunk_size : int, default=1000
+        Maximum number of CSV records read per chunk.
+    delimiter : str, default=","
+        Character used to separate values.
+    skip_header : int, default=0
+        Number of initial lines to skip once.
+    dtype : NumPy-compatible numeric dtype, default=float
+        Numeric type to use for each output array.
+    missing : {"fill", "skip", "propagate"}, default="fill"
+        Missing-value handling, as described in load_csv.
+    fill_value : number, default=np.nan
+        Replacement used when missing="fill".
+
+    Yields
+    ------
+    numpy.ndarray
+        A 2D array containing at most chunk_size rows.
+
+    Notes
+    -----
+    Blank lines are ignored. Every record must have the same
+    number of fields. Skipping missing records can produce
+    smaller chunks; empty chunks are not returned.
+    """
+    from itertools import islice
+
+    if isinstance(chunk_size, (bool, np.bool_)) or not isinstance(
+        chunk_size, (int, np.integer)
+    ):
+        raise TypeError("chunk_size must be an integer")
+
+    if chunk_size <= 0:
+        raise ValueError("chunk_size must be greater than zero")
+
+    if isinstance(skip_header, (bool, np.bool_)) or not isinstance(
+        skip_header, (int, np.integer)
+    ):
+        raise TypeError("skip_header must be an integer")
+
+    if skip_header < 0:
+        raise ValueError("skip_header must be zero or greater")
+
+    n_columns = None
+
+    with open(path, "r", encoding="utf-8") as source:
+        for _ in islice(source, int(skip_header)):
+            pass
+
+        records = (line for line in source if line.strip())
+
+        while True:
+            lines = list(islice(records, int(chunk_size)))
+
+            if not lines:
+                break
+
+            chunk = load_csv(
+                lines,
+                delimiter=delimiter,
+                dtype=dtype,
+                missing=missing,
+                fill_value=fill_value,
+            )
+
+            if n_columns is None:
+                n_columns = chunk.shape[1]
+            elif chunk.shape[1] != n_columns:
+                raise ValueError(
+                    "CSV records must have the same number of fields"
+                )
+
+            if chunk.shape[0] > 0:
+                yield chunk
+
+    if n_columns is None:
+        raise ValueError("CSV file contains no data")
