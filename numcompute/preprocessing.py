@@ -119,3 +119,87 @@ class MinMaxScaler:
     def fit_transform(self, X):
         """Learn training limits and scale the same array."""
         return self.fit(X).transform(X)
+
+
+class SimpleImputer:
+    """Replace missing numeric values using training statistics.
+
+    Parameters
+    ----------
+    strategy : {"mean", "median", "constant"}, default="mean"
+        Method used to choose replacement values.
+    fill_value : number, default=0.0
+        Finite replacement used when strategy="constant".
+
+    Attributes
+    ----------
+    statistics_ : numpy.ndarray
+        Replacement value for each feature.
+    n_features_in_ : int
+        Number of features seen during fitting.
+
+    Notes
+    -----
+    Missing values are represented by NaN.
+    Mean and median strategies reject training columns containing
+    only NaN. The constant strategy can fill those columns.
+    """
+
+    def __init__(self, strategy="mean", fill_value=0.0):
+        self.strategy = strategy
+        self.fill_value = fill_value
+
+    def fit(self, X):
+        """Learn replacement values from a 2D training array.
+
+        Returns
+        -------
+        SimpleImputer
+            This fitted imputer.
+        """
+        if self.strategy not in ("mean", "median", "constant"):
+            raise ValueError(
+                "strategy must be 'mean', 'median', or 'constant'"
+            )
+
+        X = matrix(X, allow_nan=True)
+
+        if self.strategy == "constant":
+            value = np.asarray(self.fill_value)
+
+            if value.ndim != 0 or value.dtype.kind not in "biuf":
+                raise TypeError("fill_value must be a real number")
+
+            if not np.isfinite(value):
+                raise ValueError("fill_value must be finite")
+
+            statistics = np.full(X.shape[1], float(value))
+        else:
+            if np.isnan(X).all(axis=0).any():
+                raise ValueError(
+                    "cannot learn a replacement for a feature "
+                    "containing only NaN values"
+                )
+
+            if self.strategy == "mean":
+                statistics = np.nanmean(X, axis=0)
+            else:
+                statistics = np.nanmedian(X, axis=0)
+
+        self.statistics_ = statistics
+        self.n_features_in_ = X.shape[1]
+
+        return self
+
+    def transform(self, X):
+        """Replace NaN using the saved training replacement values.
+
+        Return a new array without changing the input.
+        """
+        X = fitted(self, X, allow_nan=True)
+        return np.where(np.isnan(X), self.statistics_, X)
+
+    def fit_transform(self, X):
+        """Learn replacement values and fill the same array."""
+        return self.fit(X).transform(X)
+    
