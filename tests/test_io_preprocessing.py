@@ -8,8 +8,11 @@ from pathlib import Path
 import numpy as np
 
 from numcompute.io import load_csv, iter_csv_chunks
-from numcompute.preprocessing import StandardScaler, MinMaxScaler
-
+from numcompute.preprocessing import (
+    StandardScaler,
+    MinMaxScaler,
+    SimpleImputer,
+)
 
 
 class TestLoadCSV(unittest.TestCase):
@@ -316,6 +319,109 @@ class TestMinMaxScaler(unittest.TestCase):
         self.assertEqual(
             scaler.transform(np.empty((0, 2))).shape, (0, 2)
         )
+
+class TestSimpleImputer(unittest.TestCase):
+    """Check missing-value replacement and training statistics."""
+
+    def test_mean_strategy(self):
+        """Replace NaN with the mean of its training column."""
+        X = np.array([[1, np.nan], [3, 10], [np.nan, 20]])
+
+        imputer = SimpleImputer()
+        result = imputer.fit_transform(X)
+
+        np.testing.assert_allclose(imputer.statistics_, [2, 15])
+        np.testing.assert_allclose(
+            result,
+            [[1, 15], [3, 10], [2, 20]],
+        )
+
+    def test_median_strategy(self):
+        """Replace NaN with the median rather than the mean."""
+        X = np.array([[1], [3], [100], [np.nan]])
+
+        imputer = SimpleImputer(strategy="median")
+        result = imputer.fit_transform(X)
+
+        np.testing.assert_allclose(imputer.statistics_, [3])
+        np.testing.assert_allclose(result, [[1], [3], [100], [3]])
+
+    def test_constant_strategy(self):
+        """Fill missing values, including an entirely missing column."""
+        X = np.array([[1, np.nan], [np.nan, np.nan]])
+
+        result = SimpleImputer(
+            strategy="constant", fill_value=-1
+        ).fit_transform(X)
+
+        np.testing.assert_allclose(result, [[1, -1], [-1, -1]])
+
+    def test_reuse_training_statistics(self):
+        """Fill new data without recalculating training values."""
+        imputer = SimpleImputer()
+        self.assertIs(imputer.fit([[1, 10], [3, 20]]), imputer)
+
+        result = imputer.transform([[np.nan, 1000]])
+
+        np.testing.assert_allclose(result, [[2, 1000]])
+        np.testing.assert_allclose(imputer.statistics_, [2, 15])
+
+    def test_reject_all_nan_statistical_feature(self):
+        """Reject columns with no values for a mean or median."""
+        X = np.array([[1, np.nan], [2, np.nan]])
+
+        with self.assertRaises(ValueError):
+            SimpleImputer(strategy="mean").fit(X)
+
+        with self.assertRaises(ValueError):
+            SimpleImputer(strategy="median").fit(X)
+
+    def test_noncontiguous_input_is_unchanged(self):
+        """Fill an array view without changing its source data."""
+        source = np.array(
+            [[1, 99, np.nan, 99], [3, 99, 10, 99]],
+            dtype=float,
+        )
+        original = source.copy()
+        X = source[:, ::2]
+
+        result = SimpleImputer().fit_transform(X)
+
+        np.testing.assert_allclose(result, [[1, 10], [3, 10]])
+        np.testing.assert_allclose(
+            source, original, equal_nan=True
+        )
+
+    def test_require_fit_and_matching_features(self):
+        """Check fitting, feature counts and empty output batches."""
+        imputer = SimpleImputer()
+
+        with self.assertRaises(RuntimeError):
+            imputer.transform([[1, 2]])
+
+        imputer.fit([[1, 2], [3, 4]])
+
+        with self.assertRaises(ValueError):
+            imputer.transform([[1, 2, 3]])
+
+        self.assertEqual(
+            imputer.transform(np.empty((0, 2))).shape, (0, 2)
+        )
+
+    def test_reject_invalid_parameters(self):
+        """Reject unsupported strategies and invalid constants."""
+        with self.assertRaises(ValueError):
+            SimpleImputer(strategy="unknown").fit([[1]])
+
+        with self.assertRaises(TypeError):
+            SimpleImputer(
+                strategy="constant", fill_value="missing"
+            ).fit([[1]])
+
+        with self.assertRaises(ValueError):
+            SimpleImputer(
+                strategy="constant", fill_value=np.inf
+            ).fit([[1]])
 
 
 if __name__ == "__main__":
