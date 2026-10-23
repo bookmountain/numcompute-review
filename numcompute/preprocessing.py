@@ -202,4 +202,131 @@ class SimpleImputer:
     def fit_transform(self, X):
         """Learn replacement values and fill the same array."""
         return self.fit(X).transform(X)
-    
+
+
+class OneHotEncoder:
+    """Encode categories as a dense array of zeros and ones.
+
+    Parameters
+    ----------
+    handle_unknown : {"error", "ignore"}, default="error"
+        Raise an error for unseen categories, or encode them as
+        zeros within the corresponding feature's output columns.
+
+    Attributes
+    ----------
+    categories_ : list of numpy.ndarray
+        Sorted training categories for each input feature.
+    n_features_in_ : int
+        Number of input features seen during fitting.
+    n_features_out_ : int
+        Number of encoded output columns.
+
+    Notes
+    -----
+    Input must be a 2D array of strings or finite real numbers.
+    Object arrays are not supported. Use a string array for text
+    categories and a numeric array for numeric categories.
+    Output columns are grouped by input feature.
+    """
+
+    def __init__(self, handle_unknown="error"):
+        self.handle_unknown = handle_unknown
+
+    def _check_input(self, X, nonempty=True):
+        """Check categorical input without converting its values."""
+        X = np.asarray(X)
+
+        if X.ndim != 2:
+            raise ValueError("expected a 2D categorical array")
+
+        if X.shape[1] == 0:
+            raise ValueError("at least one feature is required")
+
+        if nonempty and X.shape[0] == 0:
+            raise ValueError("training array must not be empty")
+
+        if X.dtype.kind not in "biufUS":
+            raise TypeError(
+                "expected strings or real numeric categories"
+            )
+
+        if X.dtype.kind in "biuf" and not np.isfinite(X).all():
+            raise ValueError("numeric categories must be finite")
+
+        return X
+
+    def fit(self, X):
+        """Learn the distinct categories of each training feature."""
+        if self.handle_unknown not in ("error", "ignore"):
+            raise ValueError(
+                "handle_unknown must be 'error' or 'ignore'"
+            )
+
+        X = self._check_input(X)
+
+        pairs = np.empty(
+            X.size,
+            dtype=[("feature", np.intp), ("value", X.dtype)],
+        )
+        pairs["feature"] = np.tile(
+            np.arange(X.shape[1]), X.shape[0]
+        )
+        pairs["value"] = X.ravel()
+
+        unique_pairs = np.unique(pairs)
+        feature_indices = unique_pairs["feature"]
+        categories = unique_pairs["value"]
+        counts = np.bincount(
+            feature_indices, minlength=X.shape[1]
+        )
+
+        self.categories_ = np.split(
+            categories.copy(), np.cumsum(counts)[:-1]
+        )
+        self._feature_indices = feature_indices.copy()
+        self._categories = categories.copy()
+        self._category_starts = np.r_[0, np.cumsum(counts)[:-1]]
+        self._input_kind = X.dtype.kind
+        self.n_features_in_ = X.shape[1]
+        self.n_features_out_ = categories.size
+
+        return self
+
+    def transform(self, X):
+        """Encode data using the saved training categories.
+
+        Return a new floating-point array without changing the input.
+        """
+        if not hasattr(self, "n_features_in_"):
+            raise RuntimeError("call fit before transform")
+
+        X = self._check_input(X, nonempty=False)
+
+        if X.shape[1] != self.n_features_in_:
+            raise ValueError(
+                f"expected {self.n_features_in_} features, "
+                f"got {X.shape[1]}"
+            )
+
+        if X.dtype.kind != self._input_kind:
+            raise TypeError(
+                "category dtype kind must match the training data"
+            )
+
+        matches = (
+            X[:, self._feature_indices] == self._categories
+        )
+
+        known = np.logical_or.reduceat(
+            matches, self._category_starts, axis=1
+        )
+
+        if self.handle_unknown == "error" and not known.all():
+            raise ValueError("input contains unknown categories")
+
+        return matches.astype(float)
+
+    def fit_transform(self, X):
+        """Learn training categories and encode the same array."""
+        return self.fit(X).transform(X)
