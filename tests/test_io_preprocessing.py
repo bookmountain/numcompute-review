@@ -65,6 +65,25 @@ class TestLoadCSV(unittest.TestCase):
         )
 
 
+
+
+    def test_reject_inconsistent_columns(self):
+        """Reject a row with a different number of fields."""
+        csv = StringIO("1,2\n3,4,5\n")
+
+        with self.assertRaises(ValueError):
+            load_csv(csv)
+
+    def test_reject_nonnumeric_values(self):
+        """Reject text in a numeric CSV field."""
+        csv = StringIO("1,2\n3,hello\n")
+
+        with self.assertRaises(ValueError):
+            load_csv(csv)
+
+
+
+
 class TestCSVChunks(unittest.TestCase):
     """Check chunk sizes and consistent CSV handling."""
 
