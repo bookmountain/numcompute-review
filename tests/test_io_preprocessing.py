@@ -12,6 +12,7 @@ from numcompute.preprocessing import (
     StandardScaler,
     MinMaxScaler,
     SimpleImputer,
+    OneHotEncoder,
 )
 
 
@@ -422,6 +423,275 @@ class TestSimpleImputer(unittest.TestCase):
             SimpleImputer(
                 strategy="constant", fill_value=np.inf
             ).fit([[1]])
+
+
+class TestOneHotEncoder(unittest.TestCase):
+    """Check category encoding and reuse of training categories."""
+
+    def test_encode_multiple_features(self):
+        """Group output columns by feature and sort categories."""
+        X = np.array([
+            ["red", "small"],
+            ["blue", "large"],
+            ["red", "large"],
+        ])
+
+        encoder = OneHotEncoder()
+        result = encoder.fit_transform(X)
+
+        np.testing.assert_array_equal(
+            encoder.categories_[0], ["blue", "red"]
+        )
+        np.testing.assert_array_equal(
+            encoder.categories_[1], ["large", "small"]
+        )
+        np.testing.assert_array_equal(
+            result,
+            [[0, 1, 0, 1],
+             [1, 0, 1, 0],
+             [0, 1, 1, 0]],
+        )
+        self.assertEqual(encoder.n_features_in_, 2)
+        self.assertEqual(encoder.n_features_out_, 4)
+        self.assertEqual(result.shape, (3, 4))
+        self.assertEqual(result.dtype, np.dtype(float))
+
+    def test_reuse_training_categories(self):
+        """Keep the same output columns when new data is encoded."""
+        encoder = OneHotEncoder()
+        self.assertIs(
+            encoder.fit([["red"], ["blue"]]), encoder
+        )
+
+        result = encoder.transform([["red"], ["red"]])
+
+        np.testing.assert_array_equal(result, [[0, 1], [0, 1]])
+        np.testing.assert_array_equal(
+            encoder.categories_[0], ["blue", "red"]
+        )
+
+    def test_unknown_category_error(self):
+        """Reject unseen categories by default."""
+        encoder = OneHotEncoder().fit([["blue"], ["red"]])
+
+        with self.assertRaises(ValueError):
+            encoder.transform([["green"]])
+
+    def test_unknown_category_ignore(self):
+        """Zero only the columns belonging to an unknown feature."""
+        encoder = OneHotEncoder(handle_unknown="ignore")
+        encoder.fit([
+            ["blue", "large"],
+            ["red", "small"],
+        ])
+
+        result = encoder.transform([["green", "small"]])
+
+        np.testing.assert_array_equal(result, [[0, 0, 0, 1]])
+
+    def test_numeric_categories(self):
+        """Encode numeric categories in sorted order."""
+        encoder = OneHotEncoder()
+        result = encoder.fit_transform([[20], [10], [20]])
+
+        np.testing.assert_array_equal(
+            encoder.categories_[0], [10, 20]
+        )
+        np.testing.assert_array_equal(
+            result, [[0, 1], [1, 0], [0, 1]]
+        )
+
+    def test_noncontiguous_input_is_unchanged(self):
+        """Encode an array view without changing its source data."""
+        source = np.array([
+            ["red", "unused", "small", "unused"],
+            ["blue", "unused", "large", "unused"],
+        ])
+        original = source.copy()
+        X = source[:, ::2]
+
+        result = OneHotEncoder().fit_transform(X)
+
+        np.testing.assert_array_equal(
+            result, [[0, 1, 0, 1], [1, 0, 1, 0]]
+        )
+        np.testing.assert_array_equal(source, original)
+
+    def test_require_fit_and_matching_features(self):
+        """Check fitting, feature counts and empty output batches."""
+        encoder = OneHotEncoder()
+
+        with self.assertRaises(RuntimeError):
+            encoder.transform([["red"]])
+
+        encoder.fit([["blue"], ["red"]])
+
+        with self.assertRaises(ValueError):
+            encoder.transform([["red", "small"]])
+
+        result = encoder.transform(
+            np.empty((0, 1), dtype=str)
+        )
+        self.assertEqual(result.shape, (0, 2))
+
+    def test_reject_invalid_inputs(self):
+        """Reject unsupported options, shapes and category values."""
+        with self.assertRaises(ValueError):
+            OneHotEncoder(handle_unknown="other").fit([["red"]])
+
+        with self.assertRaises(ValueError):
+            OneHotEncoder().fit(["red", "blue"])
+
+        with self.assertRaises(ValueError):
+            OneHotEncoder().fit(np.empty((0, 1), dtype=str))
+
+        with self.assertRaises(ValueError):
+            OneHotEncoder().fit([[np.nan]])
+
+        with self.assertRaises(TypeError):
+            OneHotEncoder().fit(
+                np.array([["red"]], dtype=object)
+            )
+
+        encoder = OneHotEncoder().fit([["red"]])
+
+        with self.assertRaises(TypeError):
+            encoder.transform([[1]])
+
+
+class TestOneHotEncoder(unittest.TestCase):
+    """Check category encoding and reuse of training categories."""
+
+    def test_encode_multiple_features(self):
+        """Group output columns by feature and sort categories."""
+        X = np.array([
+            ["red", "small"],
+            ["blue", "large"],
+            ["red", "large"],
+        ])
+
+        encoder = OneHotEncoder()
+        result = encoder.fit_transform(X)
+
+        np.testing.assert_array_equal(
+            encoder.categories_[0], ["blue", "red"]
+        )
+        np.testing.assert_array_equal(
+            encoder.categories_[1], ["large", "small"]
+        )
+        np.testing.assert_array_equal(
+            result,
+            [[0, 1, 0, 1],
+             [1, 0, 1, 0],
+             [0, 1, 1, 0]],
+        )
+        self.assertEqual(encoder.n_features_in_, 2)
+        self.assertEqual(encoder.n_features_out_, 4)
+        self.assertEqual(result.shape, (3, 4))
+        self.assertEqual(result.dtype, np.dtype(float))
+
+    def test_reuse_training_categories(self):
+        """Keep the same output columns when new data is encoded."""
+        encoder = OneHotEncoder()
+        self.assertIs(
+            encoder.fit([["red"], ["blue"]]), encoder
+        )
+
+        result = encoder.transform([["red"], ["red"]])
+
+        np.testing.assert_array_equal(result, [[0, 1], [0, 1]])
+        np.testing.assert_array_equal(
+            encoder.categories_[0], ["blue", "red"]
+        )
+
+    def test_unknown_category_error(self):
+        """Reject unseen categories by default."""
+        encoder = OneHotEncoder().fit([["blue"], ["red"]])
+
+        with self.assertRaises(ValueError):
+            encoder.transform([["green"]])
+
+    def test_unknown_category_ignore(self):
+        """Zero only the columns belonging to an unknown feature."""
+        encoder = OneHotEncoder(handle_unknown="ignore")
+        encoder.fit([
+            ["blue", "large"],
+            ["red", "small"],
+        ])
+
+        result = encoder.transform([["green", "small"]])
+
+        np.testing.assert_array_equal(result, [[0, 0, 0, 1]])
+
+    def test_numeric_categories(self):
+        """Encode numeric categories in sorted order."""
+        encoder = OneHotEncoder()
+        result = encoder.fit_transform([[20], [10], [20]])
+
+        np.testing.assert_array_equal(
+            encoder.categories_[0], [10, 20]
+        )
+        np.testing.assert_array_equal(
+            result, [[0, 1], [1, 0], [0, 1]]
+        )
+
+    def test_noncontiguous_input_is_unchanged(self):
+        """Encode an array view without changing its source data."""
+        source = np.array([
+            ["red", "unused", "small", "unused"],
+            ["blue", "unused", "large", "unused"],
+        ])
+        original = source.copy()
+        X = source[:, ::2]
+
+        result = OneHotEncoder().fit_transform(X)
+
+        np.testing.assert_array_equal(
+            result, [[0, 1, 0, 1], [1, 0, 1, 0]]
+        )
+        np.testing.assert_array_equal(source, original)
+
+    def test_require_fit_and_matching_features(self):
+        """Check fitting, feature counts and empty output batches."""
+        encoder = OneHotEncoder()
+
+        with self.assertRaises(RuntimeError):
+            encoder.transform([["red"]])
+
+        encoder.fit([["blue"], ["red"]])
+
+        with self.assertRaises(ValueError):
+            encoder.transform([["red", "small"]])
+
+        result = encoder.transform(
+            np.empty((0, 1), dtype=str)
+        )
+        self.assertEqual(result.shape, (0, 2))
+
+    def test_reject_invalid_inputs(self):
+        """Reject unsupported options, shapes and category values."""
+        with self.assertRaises(ValueError):
+            OneHotEncoder(handle_unknown="other").fit([["red"]])
+
+        with self.assertRaises(ValueError):
+            OneHotEncoder().fit(["red", "blue"])
+
+        with self.assertRaises(ValueError):
+            OneHotEncoder().fit(np.empty((0, 1), dtype=str))
+
+        with self.assertRaises(ValueError):
+            OneHotEncoder().fit([[np.nan]])
+
+        with self.assertRaises(TypeError):
+            OneHotEncoder().fit(
+                np.array([["red"]], dtype=object)
+            )
+
+        encoder = OneHotEncoder().fit([["red"]])
+
+        with self.assertRaises(TypeError):
+            encoder.transform([[1]])
+
 
 
 if __name__ == "__main__":
