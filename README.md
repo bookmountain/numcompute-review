@@ -88,6 +88,20 @@ produce:
   explaining their own work;
 - an accurate contribution and review record in `CONTRIBUTIONS.md`.
 
+## Quickstart
+
+From the repository root, run the script and execute the notebook checker:
+
+```sh
+python3 -B demo/quickstart.py
+python3 -B demo/check_notebook.py
+```
+
+To run the notebook interactively, open the repository folder in VS Code, open
+`demo/quickstart.ipynb`, select the existing **Python (AIML Course)** kernel,
+and choose **Run All**. The `jupyter notebook` front end is unavailable in the
+current course environment.
+
 ## Quickstart ownership
 
 D coordinates the quickstart, but does not write everyone else's content:

@@ -117,3 +117,18 @@ column selectors, or other optional composition features at this stage.
 - Document parameter types, return types, shapes, exceptions, and complexity.
 - Use clear and consistent error messages.
 
+## 6. Current metrics behavior and open API decisions
+
+These are observed behaviors of the integrated implementation; they are not
+requirements specified elsewhere in this contract:
+
+- `roc_curve` preserves exact integer score thresholds by returning an
+  object-dtype threshold array when integer scores are used. NumPy's
+  `np.isfinite` does not support that array dtype and raises `TypeError`.
+  Whether to keep exact integer thresholds or use a numeric dtype with a
+  representability trade-off remains an API design decision.
+- Weighted `f1` with `zero_division=np.nan` currently returns `NaN` if
+  an included class has zero support. The class's undefined score propagates
+  through the weighted calculation despite its zero support. Whether to omit
+  zero-support classes from that average remains an API design decision.
+

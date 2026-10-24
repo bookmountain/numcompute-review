@@ -23,3 +23,5 @@ files, report sections, and video timestamps. Assigned ownership by itself is
 not a completed contribution.
 
 Benchmark follow-up (2026-10-22, AI-assisted; member attribution/review pending): added untimed exact batch-content/order and input-preservation checks, plus a deterministic mocked-clock arithmetic test. Complete suite passed using `/private/tmp/numcompute-pytest-deps`: 478 tests. Regenerated `benchmark/results.json`; all 13 workloads passed and all six recorded source hashes matched. No numerical implementations changed; no commit or push.
+
+Integration/testing update (2026-10-25; AI-assisted; member attribution remains pending): the integrated full suite passed 642 tests, with four warnings because optional PyYAML is unavailable. Default and four-row benchmark runs each passed all 20 correctness checks. The Quickstart script and notebook checker passed, and all notebook code cells executed in a fresh kernel from the AIML Course environment. Raven independently reviewed the stats-metrics fixes before integration; no separate teammate review is recorded here.
