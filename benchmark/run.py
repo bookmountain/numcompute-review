@@ -124,11 +124,14 @@ class _Activation:
 def available_cases(seed, rows, features):
     """Prepare current cases with a local RNG; no missing module APIs are assumed.
 
-    Positive integer rows/features define float64 input shape (rows, features).
+    At least four rows and positive features define float64 input shape.
+    Four rows are needed to guarantee coverage of all classification labels.
     Returns a list of BenchmarkCase; NumPy propagates invalid seed/shape errors.
     Setup takes O(rows*features + d**2) time/space, where d=min(features, 16),
     excluding retained reference outputs of the same order.
     """
+    if rows < 4:
+        raise ValueError("rows must be at least 4 for four-class metrics benchmarks")
     rng = np.random.default_rng(seed)
     x = rng.normal(size=(rows, features))
     y = rng.normal(size=x.shape)
@@ -222,6 +225,9 @@ def available_cases(seed, rows, features):
     # Metrics: integer labels from a seeded 4-class problem and binary scores.
     n_classes = 4
     y_true = rng.integers(0, n_classes, size=rows)
+    # Guarantee all classes, and hence both ROC classes, even at minimum size.
+    y_true[:n_classes] = np.arange(n_classes)
+    rng.shuffle(y_true)
     y_pred = np.where(rng.random(rows) < 0.7, y_true, rng.integers(0, n_classes, size=rows))
     label_metadata = {"shape": [rows], "dtype": str(y_true.dtype), "n_classes": n_classes,
                       "agreement": 0.7, "layout": "C-contiguous", "rtol": 1e-10, "atol": 1e-12}
@@ -280,6 +286,8 @@ def main():
     for name in ("rows", "features", "repeats", "number"):
         if getattr(args, name) < 1:
             parser.error(f"--{name} must be positive")
+    if args.rows < 4:
+        parser.error("--rows must be at least 4 for four-class metrics benchmarks")
     if args.seed < 0 or args.warmups < 0:
         parser.error("--seed and --warmups must be nonnegative")
     report = run_benchmarks(available_cases(args.seed, args.rows, args.features),

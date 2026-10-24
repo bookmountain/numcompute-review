@@ -101,7 +101,8 @@ def mean(data, axis=None, *, nan_policy="propagate", keepdims=False):
     O(N) time, O(N) auxiliary space under ``'omit'`` (a NaN mask), O(1)
     otherwise beyond the output.
     """
-    return _reduce(_prepare(data, nan_policy), axis, keepdims, nan_policy, np.mean, np.nanmean)
+    return _reduce(_prepare(data, nan_policy), axis, keepdims, nan_policy,
+                   np.mean, np.nanmean, dtype=np.float64)
 
 
 def median(data, axis=None, *, nan_policy="propagate", keepdims=False):
@@ -120,7 +121,8 @@ def var(data, axis=None, *, ddof=0, nan_policy="propagate", keepdims=False):
     ``ddof=0`` gives the population variance (NumPy default); ``ddof=1`` the
     unbiased sample variance. Under ``'omit'`` the divisor is the count of
     non-NaN values in each slice minus ``ddof``; a slice with no more than
-    ``ddof`` valid values gives NaN with a ``RuntimeWarning``.
+    ``ddof`` valid values gives NaN with a ``RuntimeWarning``. The same rule
+    applies to the total slice size under ``'propagate'`` and ``'raise'``.
 
     Raises
     ------
@@ -138,21 +140,25 @@ def var(data, axis=None, *, ddof=0, nan_policy="propagate", keepdims=False):
     if ddof < 0:
         raise ValueError("ddof must be >= 0")
     a = _prepare(data, nan_policy)
-    if nan_policy != "omit":
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", RuntimeWarning)
-            result = np.var(a, axis=axis, ddof=ddof, keepdims=keepdims)
-        if np.isnan(result).any() and not np.isnan(a).any():
-            warnings.warn("fewer observations than ddof; variance is NaN",
-                          RuntimeWarning, stacklevel=2)
-        return result
-    valid = np.sum(~np.isnan(a), axis=axis, keepdims=keepdims)
-    if np.any(valid <= ddof):
-        warnings.warn("all-NaN slice or fewer valid observations than ddof; "
-                      "variance is NaN", RuntimeWarning, stacklevel=2)
+    observations = ~np.isnan(a) if nan_policy == "omit" else np.ones(a.shape, dtype=bool)
+    count = np.sum(observations, axis=axis, keepdims=keepdims)
+    insufficient = count <= ddof
+    if np.any(insufficient):
+        warnings.warn("no more observations than ddof; variance is NaN",
+                      RuntimeWarning, stacklevel=2)
+    # Divide the squared-deviation sum directly by count - ddof. Computing
+    # population variance and then rescaling can lose subnormal results.
+    # Exhausted slices are masked below; replace NumPy's divisor warnings with
+    # the explicit warning above while leaving overflow warnings visible.
     with warnings.catch_warnings():
-        warnings.simplefilter("ignore", RuntimeWarning)
-        return np.nanvar(a, axis=axis, ddof=ddof, keepdims=keepdims)
+        warnings.filterwarnings("ignore", message="Degrees of freedom <= 0 for slice", category=RuntimeWarning)
+        if np.any(insufficient):
+            warnings.filterwarnings("ignore", message="divide by zero encountered in (scalar )?divide", category=RuntimeWarning)
+            warnings.filterwarnings("ignore", message="invalid value encountered in (scalar )?divide", category=RuntimeWarning)
+        reducer = np.nanvar if nan_policy == "omit" else np.var
+        variance = reducer(a, axis=axis, ddof=ddof, keepdims=keepdims)
+    result = np.where(insufficient, np.nan, variance)
+    return result[()] if result.ndim == 0 else result
 
 
 def std(data, axis=None, *, ddof=0, nan_policy="propagate", keepdims=False):

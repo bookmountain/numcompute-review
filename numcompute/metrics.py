@@ -84,13 +84,20 @@ def _pair(y_true, y_pred):
 
 def _resolve_labels(t, p, labels):
     """Return the sorted label vector and integer codes for t and p."""
+    explicit = None if labels is None else _labels_array(labels, "labels")
+    arrays = [t, p] if explicit is None else [t, p, explicit]
+    # Only use Python integers when NumPy would promote integral labels to
+    # floating point. Keep the fast native path for safely compatible dtypes.
+    if (all(a.dtype.kind in "biu" for a in arrays)
+            and np.result_type(*(a.dtype for a in arrays)).kind == "f"):
+        t, p = t.astype(object), p.astype(object)
+        if explicit is not None:
+            explicit = explicit.astype(object)
     present = np.unique(np.concatenate((t, p)))
-    if labels is None:
+    if explicit is None:
         classes = present
     else:
-        classes = np.asarray(labels)
-        if classes.ndim != 1 or classes.size == 0:
-            raise ValueError("labels must be a non-empty 1-D sequence")
+        classes = explicit
         if np.unique(classes).size != classes.size:
             raise ValueError("labels must not contain duplicates")
         if (classes.dtype.kind in "US") != (present.dtype.kind in "US"):
@@ -335,9 +342,11 @@ def roc_curve(y_true, y_score, *, pos_label=1):
         False-positive rate, non-decreasing from 0 to 1.
     tpr : numpy.ndarray of float64, shape (n_thresholds,)
         True-positive rate, non-decreasing from 0 to 1.
-    thresholds : numpy.ndarray of float64, shape (n_thresholds,)
-        Strictly decreasing; ``thresholds[0]`` is ``+inf`` (predict nothing
-        positive) and each later point predicts ``score >= threshold``.
+    thresholds : numpy.ndarray, shape (n_thresholds,)
+        Object dtype for integer/bool scores (exact integers plus infinity),
+        otherwise floating point. Strictly decreasing; ``thresholds[0]`` is
+        ``+inf`` (predict nothing positive) and each later point predicts
+        ``score >= threshold``.
 
     Raises
     ------
@@ -357,7 +366,7 @@ def roc_curve(y_true, y_score, *, pos_label=1):
     for the sort, O(n) space.
     """
     t = _labels_array(y_true, "y_true")
-    s = real_array(y_score, ndim=1).astype(float, copy=False)
+    s = real_array(y_score, ndim=1)
     if t.shape != s.shape:
         raise ValueError(f"y_true and y_score must have the same length, got {t.size} and {s.size}")
     classes = np.unique(t)
@@ -370,16 +379,20 @@ def roc_curve(y_true, y_score, *, pos_label=1):
     n_neg = int(positive.size - n_pos)
     if n_pos == 0 or n_neg == 0:
         raise ValueError("roc_curve needs at least one positive and one negative sample")
-    order = np.argsort(-s, kind="stable")
+    # Reverse an ascending sort: negation overflows unsigned and minimum signed
+    # integers. Tie order is immaterial because the whole group is accumulated.
+    order = np.argsort(s, kind="stable")[::-1]
     scores = s[order]
     positive = positive[order]
     # Index of the last sample in each run of tied scores.
-    distinct = np.r_[np.flatnonzero(np.diff(scores)), scores.size - 1]
+    distinct = np.r_[np.flatnonzero(scores[1:] != scores[:-1]), scores.size - 1]
     tps = np.cumsum(positive)[distinct]
     fps = 1 + distinct - tps
     tpr = np.r_[0.0, tps / n_pos]
     fpr = np.r_[0.0, fps / n_neg]
-    thresholds = np.r_[np.inf, scores[distinct]]
+    # An infinity sentinel cannot share an integer dtype without loss of precision.
+    values = scores[distinct].astype(object) if s.dtype.kind in "biu" else scores[distinct]
+    thresholds = np.r_[np.inf, values]
     return fpr, tpr, thresholds
 
 
