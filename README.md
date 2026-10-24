@@ -65,7 +65,7 @@ rows and reuses those fitted values for the test rows.
 | A: pending | CSV I/O and preprocessing | `data-preprocessing` |
 | Shushan | Sorting, searching, ranking, and percentiles | `book/algorithm` |
 | C: pending | Statistics, metrics, and benchmarking | `stats-metrics` |
-| D: pending | Pipelines, optimisation, utilities, and integration | `pipeline-optim` |
+| Ruofan| Pipelines, optimisation, utilities, and integration | `pipeline-optim` |
 
 Members A, C, and D should replace `pending` with their names and GitHub
 usernames. Branch ownership includes implementation, tests, documentation,
@@ -149,3 +149,59 @@ A member's allocation is complete only when:
 After all module pull requests are merged, D creates the integration branch,
 assembles the quickstart, runs the complete test suite and notebook, and opens
 the final integration pull request. The entire group reviews the final result.
+
+## Current benchmarks
+
+From the repository root (Python 3.10+ and NumPy installed):
+
+```sh
+python3 benchmark/run.py
+python3 benchmark/run.py --rows 4000 --features 32 --repeats 7 --number 5 --seed 2026 --output benchmark/results-large.json
+```
+
+The reusable harness is `numcompute/benchmarking.py`; current workload definitions
+and the CLI are in `benchmark/run.py`. The default run writes
+`benchmark/results.json` and prints a median-time table. JSON retains all samples
+in seconds per call, min/median/max, correctness status, seed, shapes, dtypes,
+tolerances, repetitions, warmups, Python/NumPy/platform/CPU and NumPy build details,
+thread environment, source hashes, and available Git provenance. Input setup and
+correctness checks are outside timing. Each sample averages `--number` calls;
+implementation order alternates across samples. GC is left in its existing state.
+
+Current coverage uses only implemented modules:
+
+- `utils`: sigmoid, ReLU, softmax, logsumexp, Euclidean/Manhattan distances and
+  fully consumed batching, compared with explicit Python loops.
+- `optim`: central finite-difference gradient and Jacobian of quadratic functions,
+  checked against analytic derivatives; no timed analytic baseline.
+- `pipeline`: Pipeline and FeatureUnion transform/fit_transform, using benchmark
+  adapters around existing ReLU/sigmoid utilities. Direct utility calls are the
+  comparison. Fitting these adapters is a no-op; fit_transform includes fresh
+  construction, while transform uses pre-fitted objects. These ratios measure
+  composition overhead, not a loop-versus-vectorisation speedup. Estimator
+  prediction is not covered because no concrete estimator is implemented.
+
+Both timed implementations must pass shape/value checks before measurement.
+The runner uses finite standard-normal float64 inputs; these measurements are
+not exhaustive numerical edge-case tests. Ratios are baseline median divided by
+operation median and are environment-specific evidence, never test thresholds.
+Small workloads include Python-call and allocation overhead; CPU load and thread
+settings can affect results. A fixed seed reproduces inputs, not elapsed times.
+
+To extend coverage once another module is implemented, add a case factory using
+its actual API and append its `BenchmarkCase` objects in `available_cases`.
+Each case provides a zero-argument operation, a correctness checker, optional
+equivalent baseline and descriptive metadata. Consume lazy results inside the
+operation; reset mutable state there, or prepare a safely reusable fitted object
+outside timing. No harness change is needed for preprocessing, sorting/searching,
+ranking, statistics, metrics or I/O. No cases or imports for those missing modules
+are supplied now.
+
+Run the harness tests using only the standard library and NumPy:
+
+```sh
+python3 -m unittest discover -s tests -p test_benchmarking.py
+```
+
+The existing numerical test suite uses pytest and can be run with
+`python3 -m pytest tests` when that development dependency is installed.
