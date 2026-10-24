@@ -180,6 +180,13 @@ Current coverage uses only implemented modules:
   construction, while transform uses pre-fitted objects. These ratios measure
   composition overhead, not a loop-versus-vectorisation speedup. Estimator
   prediction is not covered because no concrete estimator is implemented.
+- `stats`: column-wise mean and sample variance against explicit two-pass loops,
+  one batched `RunningStats.update` against a per-element Welford loop, and a
+  32-bin histogram against an edge-scanning loop.
+- `metrics`: confusion matrix and macro F1 on a seeded four-class problem
+  against pure-Python counting (small ratios: at this size both are dominated
+  by call overhead), and ROC AUC with tied scores checked against the O(P·N)
+  pairwise Mann–Whitney count.
 
 Both timed implementations must pass shape/value checks before measurement.
 The runner uses finite standard-normal float64 inputs; these measurements are
@@ -194,8 +201,7 @@ Each case provides a zero-argument operation, a correctness checker, optional
 equivalent baseline and descriptive metadata. Consume lazy results inside the
 operation; reset mutable state there, or prepare a safely reusable fitted object
 outside timing. No harness change is needed for preprocessing, sorting/searching,
-ranking, statistics, metrics or I/O. No cases or imports for those missing modules
-are supplied now.
+ranking or I/O; no cases or imports for those modules are supplied now.
 
 Run the harness tests using only the standard library and NumPy:
 

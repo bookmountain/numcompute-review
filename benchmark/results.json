@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "environment": {
-    "timestamp_utc": "2026-10-22T04:21:46.675849+00:00",
-    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
-    "executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
-    "numpy": "2.5.3",
-    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
-    "machine": "arm64",
-    "processor": "arm",
-    "cpu_count": 8,
-    "numpy_config": "{\n  \"Compilers\": {\n    \"c\": {\n      \"name\": \"clang\",\n      \"linker\": \"ld64\",\n      \"version\": \"21.0.0\",\n      \"commands\": \"clang\"\n    },\n    \"cython\": {\n      \"name\": \"cython\",\n      \"linker\": \"cython\",\n      \"version\": \"3.3.0\",\n      \"commands\": \"cython\"\n    },\n    \"c++\": {\n      \"name\": \"clang\",\n      \"linker\": \"ld64\",\n      \"version\": \"21.0.0\",\n      \"commands\": \"clang++\"\n    }\n  },\n  \"Machine Information\": {\n    \"host\": {\n      \"cpu\": \"aarch64\",\n      \"family\": \"aarch64\",\n      \"endian\": \"little\",\n      \"system\": \"darwin\"\n    },\n    \"build\": {\n      \"cpu\": \"aarch64\",\n      \"family\": \"aarch64\",\n      \"endian\": \"little\",\n      \"system\": \"darwin\"\n    }\n  },\n  \"Build Dependencies\": {\n    \"blas\": {\n      \"name\": \"openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34\",\n      \"detection method\": \"system\",\n      \"include directory\": \"unknown\",\n      \"lib directory\": \"unknown\",\n      \"openblas configuration\": \"unknown\",\n      \"pc file directory\": \"unknown\"\n    },\n    \"lapack\": {\n      \"name\": \"openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34\",\n      \"detection method\": \"system\",\n      \"include directory\": \"unknown\",\n      \"lib directory\": \"unknown\",\n      \"openblas configuration\": \"unknown\",\n      \"pc file directory\": \"unknown\"\n    }\n  },\n  \"Python Information\": {\n    \"path\": \"/opt/homebrew/Cellar/python@3.14/3.14.7/bin/python3.14\",\n    \"version\": \"3.14\"\n  },\n  \"SIMD Extensions\": {\n    \"baseline\": [\n      \"NEON\",\n      \"NEON_FP16\",\n      \"NEON_VFPV4\",\n      \"ASIMD\"\n    ],\n    \"found\": [\n      \"ASIMDHP\",\n      \"ASIMDDP\"\n    ],\n    \"not found\": [\n      \"ASIMDFHM\",\n      \"SVE\"\n    ]\n  }\n}\n",
+    "timestamp_utc": "2026-10-24T08:03:12.020260+00:00",
+    "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+    "executable": "C:\\Users\\LAMcB\\Desktop\\Master of Computer Science\\AIML\\Assignment_2.1\\numcompute-review\\.venv\\Scripts\\python.exe",
+    "numpy": "2.5.4",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD",
+    "cpu_count": 12,
+    "numpy_config": "{\n  \"Compilers\": {\n    \"c\": {\n      \"name\": \"msvc\",\n      \"linker\": \"link\",\n      \"version\": \"19.44.35229\",\n      \"commands\": \"cl\"\n    },\n    \"cython\": {\n      \"name\": \"cython\",\n      \"linker\": \"cython\",\n      \"version\": \"3.3.0\",\n      \"commands\": \"cython\"\n    },\n    \"c++\": {\n      \"name\": \"msvc\",\n      \"linker\": \"link\",\n      \"version\": \"19.44.35229\",\n      \"commands\": \"cl\"\n    }\n  },\n  \"Machine Information\": {\n    \"host\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"windows\"\n    },\n    \"build\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"windows\"\n    }\n  },\n  \"Build Dependencies\": {\n    \"blas\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34.106.0\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-x7xez3kh/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include\",\n      \"lib directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-x7xez3kh/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.34.106.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24\",\n      \"pc file directory\": \"D:/a/numpy-release/numpy-release/.openblas\"\n    },\n    \"lapack\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34.106.0\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-x7xez3kh/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include\",\n      \"lib directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-x7xez3kh/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.34.106.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24\",\n      \"pc file directory\": \"D:/a/numpy-release/numpy-release/.openblas\"\n    }\n  },\n  \"Python Information\": {\n    \"path\": \"C:\\\\Users\\\\runneradmin\\\\AppData\\\\Local\\\\Temp\\\\build-env-d_u7wnpv\\\\Scripts\\\\python.exe\",\n    \"version\": \"3.14\"\n  },\n  \"SIMD Extensions\": {\n    \"baseline\": [\n      \"X86_V2\"\n    ],\n    \"found\": [\n      \"X86_V3\"\n    ]\n  }\n}\n",
     "thread_environment": {
       "OMP_NUM_THREADS": null,
       "OPENBLAS_NUM_THREADS": null,
@@ -19,7 +19,7 @@
     },
     "gc_enabled": true,
     "timer": "perf_counter_ns",
-    "timer_resolution_seconds": 4.166666666666666e-08
+    "timer_resolution_seconds": 1e-07
   },
   "config": {
     "seed": 2026,
@@ -49,30 +49,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.0006383333333333333,
-          0.0006246806666666667,
-          0.000619125,
-          0.0006373333333333333,
-          0.0006195556666666667
+          0.0021567,
+          0.0015133666666666667,
+          0.0014752666666666666,
+          0.0020307333333333334,
+          0.0017538
         ],
-        "median_seconds": 0.0006246806666666667,
-        "min_seconds": 0.000619125,
-        "max_seconds": 0.0006383333333333333
+        "median_seconds": 0.0017538,
+        "min_seconds": 0.0014752666666666666,
+        "max_seconds": 0.0021567
       },
       "baseline_label": "python_loop",
       "baseline": {
         "samples_seconds_per_call": [
-          0.005002958333333333,
-          0.005092194666666667,
-          0.004951569666666667,
-          0.005050486,
-          0.0049508473333333336
+          0.0313021,
+          0.03805513333333333,
+          0.022497866666666668,
+          0.0239735,
+          0.0227934
         ],
-        "median_seconds": 0.005002958333333333,
-        "min_seconds": 0.0049508473333333336,
-        "max_seconds": 0.005092194666666667
+        "median_seconds": 0.0239735,
+        "min_seconds": 0.022497866666666668,
+        "max_seconds": 0.03805513333333333
       },
-      "baseline_over_operation": 8.008825309144617
+      "baseline_over_operation": 13.669460599840345
     },
     {
       "name": "utils.relu",
@@ -91,30 +91,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          1.8166666666666667e-05,
-          1.8361e-05,
-          1.633333333333333e-05,
-          3.5375e-05,
-          1.9680666666666666e-05
+          3.933333333333333e-05,
+          5.12e-05,
+          3.5e-05,
+          4.786666666666667e-05,
+          3.486666666666667e-05
         ],
-        "median_seconds": 1.8361e-05,
-        "min_seconds": 1.633333333333333e-05,
-        "max_seconds": 3.5375e-05
+        "median_seconds": 3.933333333333333e-05,
+        "min_seconds": 3.486666666666667e-05,
+        "max_seconds": 5.12e-05
       },
       "baseline_label": "python_loop",
       "baseline": {
         "samples_seconds_per_call": [
-          0.0031272223333333334,
-          0.0030215416666666667,
-          0.0030334306666666665,
-          0.0032181526666666665,
-          0.0030542223333333333
+          0.010466633333333333,
+          0.010130166666666668,
+          0.010410733333333333,
+          0.0117212,
+          0.010576933333333333
         ],
-        "median_seconds": 0.0030542223333333333,
-        "min_seconds": 0.0030215416666666667,
-        "max_seconds": 0.0032181526666666665
+        "median_seconds": 0.010466633333333333,
+        "min_seconds": 0.010130166666666668,
+        "max_seconds": 0.0117212
       },
-      "baseline_over_operation": 166.3429188678903
+      "baseline_over_operation": 266.10084745762714
     },
     {
       "name": "utils.softmax",
@@ -133,30 +133,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.00020495833333333333,
-          0.00021744433333333333,
-          0.00018391666666666667,
-          0.00022270833333333333,
-          0.00019347233333333333
+          0.0007055666666666667,
+          0.0006578,
+          0.0006557333333333333,
+          0.0006631333333333334,
+          0.0006169333333333333
         ],
-        "median_seconds": 0.00020495833333333333,
-        "min_seconds": 0.00018391666666666667,
-        "max_seconds": 0.00022270833333333333
+        "median_seconds": 0.0006578,
+        "min_seconds": 0.0006169333333333333,
+        "max_seconds": 0.0007055666666666667
       },
       "baseline_label": "python_loop",
       "baseline": {
         "samples_seconds_per_call": [
-          0.008184694666666667,
-          0.008226986,
-          0.011931847333333334,
-          0.011848305666666666,
-          0.008067541666666667
+          0.0324214,
+          0.03219693333333333,
+          0.03211716666666667,
+          0.03296673333333333,
+          0.0320853
         ],
-        "median_seconds": 0.008226986,
-        "min_seconds": 0.008067541666666667,
-        "max_seconds": 0.011931847333333334
+        "median_seconds": 0.03219693333333333,
+        "min_seconds": 0.0320853,
+        "max_seconds": 0.03296673333333333
       },
-      "baseline_over_operation": 40.1397975198211
+      "baseline_over_operation": 48.94638694638694
     },
     {
       "name": "utils.logsumexp",
@@ -175,30 +175,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.000242014,
-          0.00021654166666666667,
-          0.00018666666666666666,
-          0.00022202766666666666,
-          0.000212
+          0.0006208,
+          0.0006587666666666666,
+          0.0005796,
+          0.0006209333333333333,
+          0.0005762333333333334
         ],
-        "median_seconds": 0.00021654166666666667,
-        "min_seconds": 0.00018666666666666666,
-        "max_seconds": 0.000242014
+        "median_seconds": 0.0006208,
+        "min_seconds": 0.0005762333333333334,
+        "max_seconds": 0.0006587666666666666
       },
       "baseline_label": "python_loop",
       "baseline": {
         "samples_seconds_per_call": [
-          0.006347916666666667,
-          0.006462875,
-          0.0063419443333333336,
-          0.006254611333333333,
-          0.006302652666666667
+          0.029335966666666668,
+          0.0295777,
+          0.02891,
+          0.0297225,
+          0.031498333333333337
         ],
-        "median_seconds": 0.0063419443333333336,
-        "min_seconds": 0.006254611333333333,
-        "max_seconds": 0.006462875
+        "median_seconds": 0.0295777,
+        "min_seconds": 0.02891,
+        "max_seconds": 0.031498333333333337
       },
-      "baseline_over_operation": 29.287408889744086
+      "baseline_over_operation": 47.64449097938144
     },
     {
       "name": "utils.euclidean_distance",
@@ -217,30 +217,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.00046211133333333334,
-          0.0004537636666666667,
-          0.0003896806666666667,
-          0.00045645833333333335,
-          0.0004387083333333333
+          0.0010591666666666666,
+          0.0010521,
+          0.0010219,
+          0.0010571333333333334,
+          0.0010369666666666666
         ],
-        "median_seconds": 0.0004537636666666667,
-        "min_seconds": 0.0003896806666666667,
-        "max_seconds": 0.00046211133333333334
+        "median_seconds": 0.0010521,
+        "min_seconds": 0.0010219,
+        "max_seconds": 0.0010591666666666666
       },
       "baseline_label": "python_loop",
       "baseline": {
         "samples_seconds_per_call": [
-          0.004860069666666667,
-          0.004633791666666666,
-          0.004783583333333333,
-          0.004675889,
-          0.004644583333333333
+          0.0199897,
+          0.019712533333333334,
+          0.018307233333333332,
+          0.0183429,
+          0.018328733333333333
         ],
-        "median_seconds": 0.004675889,
-        "min_seconds": 0.004633791666666666,
-        "max_seconds": 0.004860069666666667
+        "median_seconds": 0.0183429,
+        "min_seconds": 0.018307233333333332,
+        "max_seconds": 0.0199897
       },
-      "baseline_over_operation": 10.304679161178615
+      "baseline_over_operation": 17.434559452523523
     },
     {
       "name": "utils.manhattan_distance",
@@ -259,30 +259,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          4.672233333333333e-05,
-          5.108333333333333e-05,
-          4.440266666666667e-05,
-          5.5625e-05,
-          4.1861e-05
+          0.00033853333333333334,
+          0.0001609,
+          0.00012363333333333332,
+          0.00016193333333333333,
+          0.00012383333333333333
         ],
-        "median_seconds": 4.672233333333333e-05,
-        "min_seconds": 4.1861e-05,
-        "max_seconds": 5.5625e-05
+        "median_seconds": 0.0001609,
+        "min_seconds": 0.00012363333333333332,
+        "max_seconds": 0.00033853333333333334
       },
       "baseline_label": "python_loop",
       "baseline": {
         "samples_seconds_per_call": [
-          0.005048597333333333,
-          0.005230153,
-          0.005057625,
-          0.0051310416666666666,
-          0.005215472333333334
+          0.020987333333333334,
+          0.0196267,
+          0.01991216666666667,
+          0.019847766666666666,
+          0.020285566666666668
         ],
-        "median_seconds": 0.0051310416666666666,
-        "min_seconds": 0.005048597333333333,
-        "max_seconds": 0.005230153
+        "median_seconds": 0.01991216666666667,
+        "min_seconds": 0.0196267,
+        "max_seconds": 0.020987333333333334
       },
-      "baseline_over_operation": 109.81989341285752
+      "baseline_over_operation": 123.7549202403149
     },
     {
       "name": "utils.iter_batches",
@@ -301,30 +301,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          4.555666666666667e-06,
-          4.0693333333333336e-06,
-          3.972e-06,
-          4.041666666666666e-06,
-          3.916666666666667e-06
+          1.61e-05,
+          1.4466666666666667e-05,
+          1.44e-05,
+          1.4233333333333333e-05,
+          1.4066666666666667e-05
         ],
-        "median_seconds": 4.041666666666666e-06,
-        "min_seconds": 3.916666666666667e-06,
-        "max_seconds": 4.555666666666667e-06
+        "median_seconds": 1.44e-05,
+        "min_seconds": 1.4066666666666667e-05,
+        "max_seconds": 1.61e-05
       },
       "baseline_label": "python_slice_loop",
       "baseline": {
         "samples_seconds_per_call": [
-          3.1666666666666667e-06,
-          3.0416666666666666e-06,
-          3.083333333333333e-06,
-          2.9583333333333335e-06,
-          3e-06
+          1.1433333333333333e-05,
+          1.12e-05,
+          1.1266666666666667e-05,
+          1.11e-05,
+          1.1166666666666666e-05
         ],
-        "median_seconds": 3.0416666666666666e-06,
-        "min_seconds": 2.9583333333333335e-06,
-        "max_seconds": 3.1666666666666667e-06
+        "median_seconds": 1.12e-05,
+        "min_seconds": 1.11e-05,
+        "max_seconds": 1.1433333333333333e-05
       },
-      "baseline_over_operation": 0.7525773195876289
+      "baseline_over_operation": 0.7777777777777778
     },
     {
       "name": "optim.grad",
@@ -342,15 +342,15 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.00011716666666666666,
-          0.00011541666666666666,
-          0.00012320833333333332,
-          0.00013276366666666666,
-          0.00011130566666666666
+          0.0005448333333333334,
+          0.0005976333333333333,
+          0.0006264333333333333,
+          0.0006667,
+          0.0005385
         ],
-        "median_seconds": 0.00011716666666666666,
-        "min_seconds": 0.00011130566666666666,
-        "max_seconds": 0.00013276366666666666
+        "median_seconds": 0.0005976333333333333,
+        "min_seconds": 0.0005385,
+        "max_seconds": 0.0006667
       }
     },
     {
@@ -369,15 +369,15 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.000120014,
-          0.000125875,
-          0.00012047233333333333,
-          0.00011870833333333334,
-          0.00011856933333333333
+          0.0007352,
+          0.0015778,
+          0.0005871666666666667,
+          0.0006031666666666667,
+          0.0008134
         ],
-        "median_seconds": 0.000120014,
-        "min_seconds": 0.00011856933333333333,
-        "max_seconds": 0.000125875
+        "median_seconds": 0.0007352,
+        "min_seconds": 0.0005871666666666667,
+        "max_seconds": 0.0015778
       }
     },
     {
@@ -397,30 +397,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.000174097,
-          0.00018291666666666668,
-          0.00028252766666666667,
-          0.00018368066666666667,
-          0.000179528
+          0.0013396666666666667,
+          0.0013553,
+          0.0013349,
+          0.0014303333333333334,
+          0.0013693333333333333
         ],
-        "median_seconds": 0.00018291666666666668,
-        "min_seconds": 0.000174097,
-        "max_seconds": 0.00028252766666666667
+        "median_seconds": 0.0013553,
+        "min_seconds": 0.0013349,
+        "max_seconds": 0.0014303333333333334
       },
       "baseline_label": "direct_numpy_utilities",
       "baseline": {
         "samples_seconds_per_call": [
-          0.00016719466666666665,
-          0.00017906933333333334,
-          0.00022354166666666667,
-          0.00018020833333333333,
-          0.00016868066666666666
+          0.0011071666666666667,
+          0.0012707666666666667,
+          0.0010745666666666666,
+          0.0011671333333333333,
+          0.0011384333333333333
         ],
-        "median_seconds": 0.00017906933333333334,
-        "min_seconds": 0.00016719466666666665,
-        "max_seconds": 0.00022354166666666667
+        "median_seconds": 0.0011384333333333333,
+        "min_seconds": 0.0010745666666666666,
+        "max_seconds": 0.0012707666666666667
       },
-      "baseline_over_operation": 0.9789667425968109
+      "baseline_over_operation": 0.8399862269116308
     },
     {
       "name": "pipeline.Pipeline.fit_transform",
@@ -439,30 +439,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.00021876366666666666,
-          0.00020981933333333333,
-          0.00020494433333333333,
-          0.00020656933333333333,
-          0.0002115
+          0.0014274333333333332,
+          0.0013430666666666667,
+          0.0013259,
+          0.001292,
+          0.00142
         ],
-        "median_seconds": 0.00020981933333333333,
-        "min_seconds": 0.00020494433333333333,
-        "max_seconds": 0.00021876366666666666
+        "median_seconds": 0.0013430666666666667,
+        "min_seconds": 0.001292,
+        "max_seconds": 0.0014274333333333332
       },
       "baseline_label": "direct_numpy_utilities",
       "baseline": {
         "samples_seconds_per_call": [
-          0.00016845833333333334,
-          0.00016879166666666667,
-          0.00016275,
-          0.00016130533333333334,
-          0.00018319433333333334
+          0.0013288333333333333,
+          0.0010847333333333334,
+          0.0011597666666666668,
+          0.0012332,
+          0.0010989
         ],
-        "median_seconds": 0.00016845833333333334,
-        "min_seconds": 0.00016130533333333334,
-        "max_seconds": 0.00018319433333333334
+        "median_seconds": 0.0011597666666666668,
+        "min_seconds": 0.0010847333333333334,
+        "max_seconds": 0.0013288333333333333
       },
-      "baseline_over_operation": 0.8028732655713329
+      "baseline_over_operation": 0.8635212945497865
     },
     {
       "name": "pipeline.FeatureUnion.transform",
@@ -481,30 +481,30 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.000665875,
-          0.0008398193333333334,
-          0.000687986,
-          0.000663972,
-          0.0007016806666666666
+          0.0024254666666666666,
+          0.0024830333333333335,
+          0.0024719333333333335,
+          0.0024425,
+          0.0023706666666666668
         ],
-        "median_seconds": 0.000687986,
-        "min_seconds": 0.000663972,
-        "max_seconds": 0.0008398193333333334
+        "median_seconds": 0.0024425,
+        "min_seconds": 0.0023706666666666668,
+        "max_seconds": 0.0024830333333333335
       },
       "baseline_label": "direct_numpy_utilities",
       "baseline": {
         "samples_seconds_per_call": [
-          0.0006532083333333333,
-          0.0006909443333333334,
-          0.0006615,
-          0.000658028,
-          0.000672375
+          0.0022602666666666667,
+          0.0021423333333333333,
+          0.0021887,
+          0.0021556,
+          0.0021523666666666665
         ],
-        "median_seconds": 0.0006615,
-        "min_seconds": 0.0006532083333333333,
-        "max_seconds": 0.0006909443333333334
+        "median_seconds": 0.0021556,
+        "min_seconds": 0.0021423333333333333,
+        "max_seconds": 0.0022602666666666667
       },
-      "baseline_over_operation": 0.9615021235897242
+      "baseline_over_operation": 0.8825383828045037
     },
     {
       "name": "pipeline.FeatureUnion.fit_transform",
@@ -523,42 +523,337 @@
       "correctness": "passed",
       "operation": {
         "samples_seconds_per_call": [
-          0.000678764,
-          0.000680861,
-          0.000675764,
-          0.00085825,
-          0.0007047223333333333
+          0.0027559,
+          0.0023933,
+          0.002380933333333333,
+          0.0025599333333333335,
+          0.0024832
         ],
-        "median_seconds": 0.000680861,
-        "min_seconds": 0.000675764,
-        "max_seconds": 0.00085825
+        "median_seconds": 0.0024832,
+        "min_seconds": 0.002380933333333333,
+        "max_seconds": 0.0027559
       },
       "baseline_label": "direct_numpy_utilities",
       "baseline": {
         "samples_seconds_per_call": [
-          0.0006669723333333333,
-          0.000664653,
-          0.0006601943333333333,
-          0.0006585,
-          0.0006628473333333333
+          0.0023358,
+          0.0022961,
+          0.0023463333333333335,
+          0.0023564333333333334,
+          0.0023903
         ],
-        "median_seconds": 0.0006628473333333333,
-        "min_seconds": 0.0006585,
-        "max_seconds": 0.0006669723333333333
+        "median_seconds": 0.0023463333333333335,
+        "min_seconds": 0.0022961,
+        "max_seconds": 0.0023903
       },
-      "baseline_over_operation": 0.9735428131929031
+      "baseline_over_operation": 0.9448829467353952
+    },
+    {
+      "name": "stats.mean",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Per-column mean of a finite float64 matrix; nan_policy='propagate'."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.0001425,
+          0.00015183333333333333,
+          0.00010086666666666666,
+          0.0001103,
+          8.94e-05
+        ],
+        "median_seconds": 0.0001103,
+        "min_seconds": 8.94e-05,
+        "max_seconds": 0.00015183333333333333
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0071329,
+          0.007315333333333333,
+          0.006773933333333333,
+          0.0069062,
+          0.006909466666666667
+        ],
+        "median_seconds": 0.006909466666666667,
+        "min_seconds": 0.006773933333333333,
+        "max_seconds": 0.007315333333333333
+      },
+      "baseline_over_operation": 62.64249017830161
+    },
+    {
+      "name": "stats.var",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Per-column sample variance (ddof=1), two-pass loop baseline."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.00027223333333333335,
+          0.0002747333333333333,
+          0.0002237,
+          0.0002928333333333333,
+          0.00024353333333333333
+        ],
+        "median_seconds": 0.00027223333333333335,
+        "min_seconds": 0.0002237,
+        "max_seconds": 0.0002928333333333333
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.029793066666666666,
+          0.030026666666666667,
+          0.029751966666666668,
+          0.0300673,
+          0.030832533333333332
+        ],
+        "median_seconds": 0.030026666666666667,
+        "min_seconds": 0.029751966666666668,
+        "max_seconds": 0.030832533333333332
+      },
+      "baseline_over_operation": 110.29753887596424
+    },
+    {
+      "name": "stats.RunningStats.update",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "One batched Chan/Welford update of a fresh accumulator versus a per-element Welford loop; both return the per-column sample variance."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.0010014333333333333,
+          0.0010193666666666666,
+          0.0008857333333333334,
+          0.0009321333333333333,
+          0.0009399333333333334
+        ],
+        "median_seconds": 0.0009399333333333334,
+        "min_seconds": 0.0008857333333333334,
+        "max_seconds": 0.0010193666666666666
+      },
+      "baseline_label": "python_welford_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.027834533333333335,
+          0.0239657,
+          0.021152533333333334,
+          0.0214696,
+          0.021605633333333332
+        ],
+        "median_seconds": 0.021605633333333332,
+        "min_seconds": 0.021152533333333334,
+        "max_seconds": 0.027834533333333335
+      },
+      "baseline_over_operation": 22.986346549400665
+    },
+    {
+      "name": "stats.histogram",
+      "metadata": {
+        "shape": [
+          2000,
+          16
+        ],
+        "dtype": "float64",
+        "distribution": "standard_normal",
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "32 fixed bins on [-4, 4] over the flattened matrix; returns counts only. Baseline scans the edge list per value."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.0010380666666666666,
+          0.0007883333333333334,
+          0.0008076333333333334,
+          0.0011467,
+          0.0010749333333333333
+        ],
+        "median_seconds": 0.0010380666666666666,
+        "min_seconds": 0.0007883333333333334,
+        "max_seconds": 0.0011467
+      },
+      "baseline_label": "python_bin_scan_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0459115,
+          0.0456192,
+          0.04549916666666667,
+          0.0485153,
+          0.04455803333333333
+        ],
+        "median_seconds": 0.0456192,
+        "min_seconds": 0.04455803333333333,
+        "max_seconds": 0.0485153
+      },
+      "baseline_over_operation": 43.94631044891144
+    },
+    {
+      "name": "metrics.confusion_matrix",
+      "metadata": {
+        "shape": [
+          2000
+        ],
+        "dtype": "int64",
+        "n_classes": 4,
+        "agreement": 0.7,
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "4x4 matrix, rows=true, columns=predicted; labels inferred."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.00014586666666666667,
+          0.0001408,
+          0.00014303333333333333,
+          0.0001405,
+          0.0001356
+        ],
+        "median_seconds": 0.0001408,
+        "min_seconds": 0.0001356,
+        "max_seconds": 0.00014586666666666667
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0002868666666666667,
+          0.00029016666666666665,
+          0.0002839,
+          0.0002875,
+          0.00029406666666666664
+        ],
+        "median_seconds": 0.0002875,
+        "min_seconds": 0.0002839,
+        "max_seconds": 0.00029406666666666664
+      },
+      "baseline_over_operation": 2.041903409090909
+    },
+    {
+      "name": "metrics.f1_macro",
+      "metadata": {
+        "shape": [
+          2000
+        ],
+        "dtype": "int64",
+        "n_classes": 4,
+        "agreement": 0.7,
+        "layout": "C-contiguous",
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Macro-averaged F1 over four classes; every class present."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.0002239,
+          0.00022936666666666667,
+          0.00021516666666666667,
+          0.0002187,
+          0.0002876
+        ],
+        "median_seconds": 0.0002239,
+        "min_seconds": 0.00021516666666666667,
+        "max_seconds": 0.0002876
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.00033006666666666665,
+          0.00031813333333333333,
+          0.0003286,
+          0.00033033333333333336,
+          0.0003557333333333333
+        ],
+        "median_seconds": 0.00033006666666666665,
+        "min_seconds": 0.00031813333333333333,
+        "max_seconds": 0.0003557333333333333
+      },
+      "baseline_over_operation": 1.4741700163763585
+    },
+    {
+      "name": "metrics.roc_auc_score",
+      "metadata": {
+        "shape": [
+          2000
+        ],
+        "dtype": "float64",
+        "positives": 499,
+        "score_decimals": 2,
+        "rtol": 1e-10,
+        "atol": 1e-12,
+        "notes": "Sorted-threshold ROC AUC with tied scores collapsed, checked against the O(P*N) Mann-Whitney pairwise count with ties scored one half."
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.0005802333333333334,
+          0.0005097666666666667,
+          0.0004645333333333333,
+          0.0006153666666666666,
+          0.0004268333333333333
+        ],
+        "median_seconds": 0.0005097666666666667,
+        "min_seconds": 0.0004268333333333333,
+        "max_seconds": 0.0006153666666666666
+      },
+      "baseline_label": "python_pairwise_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0616761,
+          0.060919266666666666,
+          0.06059623333333333,
+          0.06026993333333333,
+          0.0599416
+        ],
+        "median_seconds": 0.06059623333333333,
+        "min_seconds": 0.0599416,
+        "max_seconds": 0.0616761
+      },
+      "baseline_over_operation": 118.87052900019616
     }
   ],
   "source_sha256": {
-    "benchmark/run.py": "f2e82681a029f122c21a87bb93a22b90cc09f2adc00d7ff13838847007233bdd",
-    "numcompute/benchmarking.py": "21a21775cdca6ebd33d874694f1365e5dda5d5e4e0b7dc7dff07d2e381372b31",
-    "numcompute/_validation.py": "4e0b3099babe83070a3b7e75f8675a91c79e3811ddcb9bdc9c5509b0173d054b",
-    "numcompute/utils.py": "a29a76928742d2b3406fdcfdaa967c19f5d59adeb8d5f4760e9c21bb7803fb0a",
-    "numcompute/optim.py": "446263bdd81ddefe751e7ef1831499d646fc7dc6448712c6bfea4d655c131435",
-    "numcompute/pipeline.py": "ff48b2905d2ae918db27931466df970fbf8132f026d4e5c5dc67833029612f87"
+    "benchmark\\run.py": "c48d3a9a73516679ee92511c6e03aba271f685676379ac83f0d5d466db704ea5",
+    "numcompute\\benchmarking.py": "e4a393fe3150eb80275c2185ac36a0ff7151de147d25fdeef494346bc44a43e2",
+    "numcompute\\_validation.py": "97ebe902236223ca2b90b80ac6c3cb6c592f8fc66c9d0a0e5c0c84646344e18a",
+    "numcompute\\utils.py": "e1519c2d607e6121f4fcb55500ecc29fd2ee3da6a2ca5a2ac25a7a3a48b1b820",
+    "numcompute\\optim.py": "4b3d11519d2b642f2fd56fb5a743c3ce72c63d324c85c8609765d827f3b93445",
+    "numcompute\\pipeline.py": "51d3ab99e544dac36e935da859c3dfc23904caaa8be8179345466bed891af6e1",
+    "numcompute\\stats.py": "42fe88f9abd7187a3a78e92a49c5155258344fb8a385aa5239b1dc31d4e6d135",
+    "numcompute\\metrics.py": "64374185562ff7d47fb5ea7bc53133892a76fed9157160cecec8e6fec327b268"
   },
   "git": {
-    "head": "bf8cdc2e6104e64aba019e64c65f8b0eb690674d",
-    "status": " M CONTRIBUTIONS.md\n M README.md\n?? benchmark/\n?? numcompute/benchmarking.py\n?? optim_explained.py\n?? tests/test_benchmarking.py\n"
+    "head": "5bb4a0251c86570195643300183414c93858cd79",
+    "status": " M README.md\n M benchmark/results.json\n M benchmark/run.py\n?? numcompute/metrics.py\n?? numcompute/stats.py\n?? tests/test_stats_metrics.py\n"
   }
 }
