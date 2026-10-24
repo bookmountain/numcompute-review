@@ -7,7 +7,7 @@ not evidence of contribution.
 |---|---|---|---|---|---|
 | Katherine Roman (A) | Implemented CSV loading, chunk iteration, and four preprocessing classes; documented installation in README.md. | 41 CSV and preprocessing tests passed locally. | Pending | Pending | Pending |
 | Shushan | Pending | Pending | Pending | Pending | Pending |
-| C: name pending | Pending | Pending | Pending | Pending | Pending |
+| Lachlan | Implemented `stats.py` (axis-aware mean/median/var/std/min/max, histogram, quantile, mergeable Welford/Chan `RunningStats` with NaN policies) and `metrics.py` (confusion matrix, accuracy, precision/recall/F1 with multiclass averaging, MSE, ROC curve, AUC), Added seven correctness-checked stats/metrics benchmark cases to `benchmark/run.py` and regenerated `benchmark/results.json`. AI-assisted implementation, reviewed and tested locally. | 30 new tests in `tests/test_stats_metrics.py` (axes/shapes, all-NaN slices, streaming merges, undefined ratios, averaging, score ties, invalid inputs); full suite 563 passed. | Pending | Pending | PR `stats-metrics` → `main`, 2026-10-24 |
 | D: name pending | Pending | Pending | Pending | Pending | Pending |
 
 ## Decisions and integration log
