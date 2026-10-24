@@ -25,6 +25,39 @@ The group submission requires a Git repository, at least 20 meaningful unit
 tests, an end-to-end `demo/quickstart.ipynb`, reproducible benchmarks, a video of
 at most five minutes, and a PDF report of at most four pages.
 
+## Installation and preprocessing checks
+
+Python 3.10 or newer is required. NumPy 1.24 or newer is the
+only runtime dependency.
+
+Download and extract the repository ZIP, or clone the repository.
+Open a terminal in the project folder containing `pyproject.toml`.
+
+Install the package and its dependency:
+
+```sh
+python -m pip install -e .
+```
+
+The editable installation uses the code in this project folder,
+so saved code changes are available without reinstalling.
+
+Run the CSV and preprocessing tests:
+
+```sh
+python -m unittest discover -s tests -p test_io_preprocessing.py -v
+```
+
+Run the preprocessing demonstration:
+
+```sh
+python -m demo.preprocessing_demo
+```
+
+The demonstration uses `demo/data/sample.csv` and prints the
+output shapes. It fits the preprocessing tools on the training
+rows and reuses those fitted values for the test rows.
+
 ## Branch ownership
 
 | Member | Area | Branch |
