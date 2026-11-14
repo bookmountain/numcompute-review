@@ -1,4 +1,107 @@
-# NumCompute group assignment
+# NumCompute-Stream (Assignment 2.2)
+
+The individual extension lives in `numcompute_stream/`. It reuses the original
+`numcompute` package and adds a buffered decision tree, incremental preprocessing,
+a pipeline, streaming metrics and statistics, and plots. Group code and the
+original demo and tests remain unchanged.
+
+```sh
+python -m pip install -e '.[dev]'
+python -m pytest -q
+python -m demo.stream_demo
+MPLBACKEND=Agg python -m demo.check_notebook demo/stream_demo.ipynb
+python -m benchmark.stream_benchmark
+```
+
+Start with [demo/stream_demo.ipynb](demo/stream_demo.ipynb). It reads 100-row CSV
+chunks and visibly calls `Pipeline.partial_fit()` on each chunk, comparing
+buffers of 200 and 500 rows. Each chunk is scored **before training**; warm-up
+accuracy is NaN and excluded from cumulative accuracy.
+
+Save plots with `MPLBACKEND=Agg python -m demo.stream_demo --output demo/stream_output`.
+Recreate the synthetic CSV with `python -m demo.generate_stream_data`.
+
+## Streaming API
+
+| Component | Main methods |
+|---|---|
+| `DecisionTreeClassifier` | `fit`, `partial_fit`, `predict`, `predict_proba` |
+| `StandardScaler`, `MinMaxScaler`, `SimpleImputer` (also `Imputer`), `OneHotEncoder` | `fit`, `partial_fit`, `transform` |
+| `Pipeline` | `fit`, `partial_fit`, `predict` |
+| `StreamingStats` | `update_stats`, `result`, `reset` |
+| `StreamingMetrics` | `update`, `result`, `reset` |
+| `StreamTrainer` | `fit_chunk`, `score_chunk` |
+
+Inputs are `X: (samples, features)` and `y: (samples,)`. Retained inputs are
+copied. Shapes and feature counts are checked. Impute NaNs before tree training.
+Batch metrics and statistics remain available from their respective modules;
+streaming precision, recall and F1 are calculated locally from confusion counts.
+
+The tree supports Gini/entropy, depth/sample limits and feature sampling.
+`partial_fit` retrains on the entire buffer once `buffer_size` is reached,
+then clears it, including any overshoot. Before the first retrain, prediction
+raises `RuntimeError`. Majority ties choose the smallest sorted label. Splits
+are numeric (`x <= threshold`), so one-hot encode categories first. Final
+partial buffers stay pending.
+
+The pipeline updates each transformer, transforms the chunk, and calls the final
+step's public `partial_fit()`. `pipeline.n_buffered_` reports pending rows.
+Predictions use the current preprocessing. Updating a scaler can move features
+relative to the tree's learned thresholds, and buffered rows may have been
+scaled using different estimates. This is a simplicity trade-off; drift can be
+substantial after a distribution change. Retraining replaces the tree but does
+not rescale earlier buffered rows. The buffered tree requires a fixed feature
+width: new one-hot categories that add columns are unsupported within its
+streaming pipeline and raise `ValueError`. Such a failed update can leave earlier
+transformers updated; refit the pipeline on a consistent schema before reuse.
+The batch `FeatureUnion` remains available in `numcompute.pipeline`.
+
+`StreamTrainer.fit_chunk` tests before training and logs sample-weighted
+cumulative accuracy, fit time and estimated model-owned memory (not process RSS).
+`score_chunk` evaluates without fitting; calling both on the same chunk counts
+it twice. Plots return `(fig, ax)` and accept `save_path` and `show`. Prediction
+plots made after training are separate from the pre-training evaluation scores.
+
+Metrics include accuracy, precision, recall, F1, a confusion matrix and optional
+exact binary AUC (`track_auc=True`, positive-class scores required per update).
+Averaging follows the batch functions, with macro as the default. `window_size`
+limits metrics and statistics to recent samples. Exact AUC and quantiles retain
+history unless windowed; median imputation retains all observations. Encoder
+categories can also grow when used independently.
+
+## Requirements map
+
+Where each item of `Assignment2.2-specs.md` and the brief is implemented and tested.
+
+| Requirement | Implementation | Tests |
+|---|---|---|
+| Buffered decision tree: `max_depth`, `min_samples_split`, `max_features`, `buffer_size`, Gini/entropy | `numcompute_stream/tree.py` | `tests/test_stream_tree.py` |
+| Scalers, imputer and encoder with `partial_fit` (Welford running mean/variance) | `numcompute_stream/preprocessing.py` | `tests/test_stream_components.py` |
+| Streaming statistics with `update_stats`: mean, variance, quantiles, windowed histograms | `numcompute_stream/stats.py` | `tests/test_stream_components.py` |
+| Streaming metrics with `update`, `reset`, `result`; accumulating confusion matrix and AUC; rolling window | `numcompute_stream/metrics.py` | `tests/test_stream_components.py` |
+| Pipeline `partial_fit` through transformers and model | `numcompute_stream/pipeline.py` | `tests/test_stream_integration.py` |
+| `StreamTrainer`: `fit_chunk`, `score_chunk`, per-chunk metrics, memory, cumulative accuracy | `numcompute_stream/stream.py` | `tests/test_stream_integration.py` |
+| Plots: `plot_metric_over_time`, `compare_models`, `plot_predictions_vs_ground_truth` | `numcompute_stream/visualise.py` | `tests/test_stream_integration.py` |
+| CSV loading through the custom I/O module | `numcompute_stream/io.py` (reuses `numcompute.io`) | `tests/test_stream_integration.py` |
+| Benchmark: loop vs vectorised split search, and buffer sizes | `benchmark/stream_benchmark.py` | split results checked before timing |
+| Demo notebook: CSV chunks, `partial_fit` per chunk, logged and plotted metrics | `demo/stream_demo.ipynb` | `demo/check_notebook.py` |
+
+The 2.2 files follow PEP 8 and are formatted with black (line length 100).
+
+## Benchmarks
+
+[Recorded benchmark results](benchmark/stream_results.json) compare the tree's
+vectorised split search with a loop that tests each threshold separately.
+Selected features and thresholds are checked for agreement before timing.
+Searches use 100, 200, 500 and 1000 rows. Streaming experiments use the same four
+buffer sizes and report training time, memory and test-before-train accuracy.
+`common_accuracy` uses only chunks scored by every model for a fair comparison.
+Fit times include preprocessing, buffering and retraining. Timings use five
+repeats and depend on the machine; the JSON includes environment details.
+
+---
+
+# Original NumCompute group assignment (Assignment 2.1)
 
 NumCompute is a four-person Python and NumPy scientific-computing toolkit. This
 repository starts with a shared package scaffold on `main`; each member develops

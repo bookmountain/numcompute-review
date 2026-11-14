@@ -22,7 +22,7 @@ cells = json.load(sys.stdin)
 namespace = {"__name__": "__main__"}
 for number, source in cells:
     try:
-        exec(compile(source, f"quickstart.ipynb:cell-{number}", "exec"), namespace)
+        exec(compile(source, f"notebook:cell-{number}", "exec"), namespace)
     except BaseException:
         print(f"Notebook code cell {number} failed:", file=sys.stderr)
         traceback.print_exc()
@@ -30,12 +30,13 @@ for number, source in cells:
 '''
 
 
-def main():
+def main(notebook_path=NOTEBOOK):
     """Run the notebook's code cells in a fresh Python process."""
+    notebook_path = Path(notebook_path)
     try:
-        notebook = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
+        notebook = json.loads(notebook_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
-        print(f"Cannot read {NOTEBOOK}: {error}", file=sys.stderr)
+        print(f"Cannot read {notebook_path}: {error}", file=sys.stderr)
         return 1
 
     cells = []
@@ -67,4 +68,4 @@ def main():
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main(sys.argv[1] if len(sys.argv) > 1 else NOTEBOOK))

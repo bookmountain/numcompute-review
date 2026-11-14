@@ -1,0 +1,222 @@
+{
+  "seed": 2026,
+  "rows": 1600,
+  "chunk_size": 100,
+  "repeats": 5,
+  "inner": 3,
+  "environment": {
+    "timestamp_utc": "2026-11-12T23:30:37.729803+00:00",
+    "python": "3.14.0 (main, Oct  7 2025, 09:34:52) [Clang 17.0.0 (clang-1700.0.13.3)]",
+    "executable": "/private/tmp/aip-stream-review-env/bin/python",
+    "numpy": "2.5.4",
+    "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "cpu_count": 10,
+    "numpy_config": "{\n  \"Compilers\": {\n    \"c\": {\n      \"name\": \"clang\",\n      \"linker\": \"ld64\",\n      \"version\": \"15.0.0\",\n      \"commands\": \"cc\"\n    },\n    \"cython\": {\n      \"name\": \"cython\",\n      \"linker\": \"cython\",\n      \"version\": \"3.3.0\",\n      \"commands\": \"cython\"\n    },\n    \"c++\": {\n      \"name\": \"clang\",\n      \"linker\": \"ld64\",\n      \"version\": \"15.0.0\",\n      \"commands\": \"c++\"\n    }\n  },\n  \"Machine Information\": {\n    \"host\": {\n      \"cpu\": \"aarch64\",\n      \"family\": \"aarch64\",\n      \"endian\": \"little\",\n      \"system\": \"darwin\"\n    },\n    \"build\": {\n      \"cpu\": \"aarch64\",\n      \"family\": \"aarch64\",\n      \"endian\": \"little\",\n      \"system\": \"darwin\"\n    }\n  },\n  \"Build Dependencies\": {\n    \"blas\": {\n      \"name\": \"accelerate\",\n      \"found\": true,\n      \"version\": \"unknown\",\n      \"detection method\": \"system\",\n      \"include directory\": \"unknown\",\n      \"lib directory\": \"unknown\",\n      \"openblas configuration\": \"unknown\",\n      \"pc file directory\": \"unknown\"\n    },\n    \"lapack\": {\n      \"name\": \"accelerate\",\n      \"found\": true,\n      \"version\": \"unknown\",\n      \"detection method\": \"system\",\n      \"include directory\": \"unknown\",\n      \"lib directory\": \"unknown\",\n      \"openblas configuration\": \"unknown\",\n      \"pc file directory\": \"unknown\"\n    }\n  },\n  \"Python Information\": {\n    \"path\": \"/private/var/folders/s6/5hzmn6lx4dz5nxs7k_0slzph0000gn/T/build-env-buaiw__1/bin/python\",\n    \"version\": \"3.14\"\n  },\n  \"SIMD Extensions\": {\n    \"baseline\": [\n      \"NEON\",\n      \"NEON_FP16\",\n      \"NEON_VFPV4\",\n      \"ASIMD\"\n    ],\n    \"found\": [\n      \"ASIMDHP\",\n      \"ASIMDDP\"\n    ],\n    \"not found\": [\n      \"ASIMDFHM\"\n    ]\n  }\n}\n",
+    "thread_environment": {
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null,
+      "NUMEXPR_NUM_THREADS": null
+    },
+    "gc_enabled": true,
+    "timer": "perf_counter_ns",
+    "timer_resolution_seconds": 4.166666666666666e-08
+  },
+  "evaluation": "test-before-train; common_accuracy uses identical scored chunks",
+  "memory": "approximate model-owned Python/NumPy bytes, not process RSS",
+  "split_search": [
+    {
+      "name": "split_search_100",
+      "metadata": {
+        "rows": 100,
+        "features": 3,
+        "criterion": "gini"
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.00011902766666666667,
+          0.00010011133333333334,
+          9.409733333333334e-05,
+          0.00011238866666666666,
+          9.327766666666666e-05
+        ],
+        "median_seconds": 0.00010011133333333334,
+        "min_seconds": 9.327766666666666e-05,
+        "max_seconds": 0.00011902766666666667
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0034129443333333334,
+          0.0033677223333333332,
+          0.0033883886666666667,
+          0.003331486,
+          0.0033485136666666668
+        ],
+        "median_seconds": 0.0033677223333333332,
+        "min_seconds": 0.003331486,
+        "max_seconds": 0.0034129443333333334
+      },
+      "baseline_over_operation": 33.639771054892215
+    },
+    {
+      "name": "split_search_200",
+      "metadata": {
+        "rows": 200,
+        "features": 3,
+        "criterion": "gini"
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.000126653,
+          0.000147236,
+          0.00013655566666666668,
+          0.00015140266666666667,
+          0.000120639
+        ],
+        "median_seconds": 0.00013655566666666668,
+        "min_seconds": 0.000120639,
+        "max_seconds": 0.00015140266666666667
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.0072204443333333335,
+          0.007288569333333333,
+          0.007511125,
+          0.0073700553333333335,
+          0.007169597
+        ],
+        "median_seconds": 0.007288569333333333,
+        "min_seconds": 0.007169597,
+        "max_seconds": 0.007511125
+      },
+      "baseline_over_operation": 53.37434550500772
+    },
+    {
+      "name": "split_search_500",
+      "metadata": {
+        "rows": 500,
+        "features": 3,
+        "criterion": "gini"
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.000236875,
+          0.00024516666666666664,
+          0.00020656966666666668,
+          0.00023876366666666666,
+          0.000243125
+        ],
+        "median_seconds": 0.00023876366666666666,
+        "min_seconds": 0.00020656966666666668,
+        "max_seconds": 0.00024516666666666664
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.021221278,
+          0.02124648633333333,
+          0.027159125,
+          0.025830138666666665,
+          0.022238819333333333
+        ],
+        "median_seconds": 0.022238819333333333,
+        "min_seconds": 0.021221278,
+        "max_seconds": 0.027159125
+      },
+      "baseline_over_operation": 93.1415555968175
+    },
+    {
+      "name": "split_search_1000",
+      "metadata": {
+        "rows": 1000,
+        "features": 3,
+        "criterion": "gini"
+      },
+      "correctness": "passed",
+      "operation": {
+        "samples_seconds_per_call": [
+          0.000405125,
+          0.0004047083333333333,
+          0.000361889,
+          0.000397111,
+          0.00035429166666666665
+        ],
+        "median_seconds": 0.000397111,
+        "min_seconds": 0.00035429166666666665,
+        "max_seconds": 0.000405125
+      },
+      "baseline_label": "python_loop",
+      "baseline": {
+        "samples_seconds_per_call": [
+          0.05522866666666667,
+          0.05450520833333333,
+          0.054698139,
+          0.05389876366666667,
+          0.05429605566666667
+        ],
+        "median_seconds": 0.05450520833333333,
+        "min_seconds": 0.05389876366666667,
+        "max_seconds": 0.05522866666666667
+      },
+      "baseline_over_operation": 137.25434030619482
+    }
+  ],
+  "buffers": [
+    {
+      "buffer_size": 100,
+      "retrains": 16,
+      "pending_samples": 0,
+      "evaluated_samples": 1500,
+      "prequential_accuracy": 0.85,
+      "common_evaluated_samples": 600,
+      "common_accuracy": 0.8416666666666667,
+      "total_fit_seconds": 0.017900413600727916,
+      "final_memory_bytes": 16623,
+      "median_fit_seconds": 0.017900413600727916
+    },
+    {
+      "buffer_size": 200,
+      "retrains": 8,
+      "pending_samples": 0,
+      "evaluated_samples": 1400,
+      "prequential_accuracy": 0.875,
+      "common_evaluated_samples": 600,
+      "common_accuracy": 0.89,
+      "total_fit_seconds": 0.01447087712585926,
+      "final_memory_bytes": 17839,
+      "median_fit_seconds": 0.01447087712585926
+    },
+    {
+      "buffer_size": 500,
+      "retrains": 3,
+      "pending_samples": 100,
+      "evaluated_samples": 1100,
+      "prequential_accuracy": 0.8263636363636364,
+      "common_evaluated_samples": 600,
+      "common_accuracy": 0.8183333333333334,
+      "total_fit_seconds": 0.010896122083067894,
+      "final_memory_bytes": 25023,
+      "median_fit_seconds": 0.010439248755574226
+    },
+    {
+      "buffer_size": 1000,
+      "retrains": 1,
+      "pending_samples": 600,
+      "evaluated_samples": 600,
+      "prequential_accuracy": 0.7066666666666667,
+      "common_evaluated_samples": 600,
+      "common_accuracy": 0.7066666666666667,
+      "total_fit_seconds": 0.006481417687609792,
+      "final_memory_bytes": 45007,
+      "median_fit_seconds": 0.006115208379924297
+    }
+  ]
+}

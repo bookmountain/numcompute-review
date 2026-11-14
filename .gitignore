@@ -5,3 +5,6 @@ __pycache__/
 build/
 dist/
 .ipynb_checkpoints/
+.pytest_cache/
+demo/stream_output/
+.DS_Store
